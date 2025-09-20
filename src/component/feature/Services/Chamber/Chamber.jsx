@@ -6,60 +6,52 @@ import {
 } from "../../../../services/DryChamberService";
 import { toast } from "react-toastify";
 import Spinner from "../../../shared/Spinner/Spinner";
+import { useFormik } from "formik";
+
+import { chamberFormValidation } from "../../../../schemas/AddChamberFrom";
 
 const Chamber = () => {
   const dispatch = useDispatch();
-  const chambers = useSelector(state => state.ServiceDataSlice.chamber);
+  const categories = useSelector((state) => state.ServiceDataSlice.chamber);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [newChamber, setNewChamber] = useState("");
-  const [tag, setTag] = useState("frozen");
-  const [capacity, setCapacity] = useState("");
+  const [isAdding, setIsAdding] = useState(false);
+  const [deletingChamber, setDeletingChamber] = useState(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const chamberName = newChamber.trim();
-    const chamberCapacity = Number(capacity);
+  const formik = useFormik({
+    initialValues: {
+      chamber_name: "",
+      capacity: "",
+      tag: "frozen",
+    },
+    validationSchema: chamberFormValidation,
+    onSubmit: async (values, { resetForm }) => {
+      setIsAdding(true);
 
-    if (!chamberName) {
-      toast.error("Please enter a chamber name");
-      return;
-    }
-
-    if (Number.isNaN(chamberCapacity) || chamberCapacity <= 0) {
-      toast.error("Please enter a valid, positive number for capacity");
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const response = await createChamber({
-        chamber_name: chamberName,
-        tag,
-        capacity: chamberCapacity,
-      });
-
-      if (response.status === 201) {
-        dispatch({
-          type: "ServiceDataSlice/handlePostCategory",
-          payload: response.data,
+      try {
+        const response = await createChamber({
+          chamber_name: values.chamber_name,
+          capacity: values.capacity,
+          tag: values.tag,
         });
-        setNewChamber("");
-        setCapacity("");
-        toast.success("Chamber added successfully 🎉");
+
+        if (response.status === 201) {
+          dispatch({
+            type: "ServiceDataSlice/handlePostCategory",
+            payload: response.data,
+          });
+          toast.success("Chamber added successfully 🎉");
+          resetForm();
+        }
+      } catch (error) {
+        toast.error(error.response?.data?.message || "Failed to add chamber");
+      } finally {
+        setIsAdding(false);
       }
-    } catch (error) {
-      const errorMessage =
-        error.response?.data?.message ||
-        "Failed to add chamber due to a network or server error.";
-      toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    },
+  });
 
   const handleDelete = async (chamberName) => {
-    setIsLoading(true);
+    setDeletingChamber(chamberName);
 
     try {
       const response = await removeChamber(chamberName);
@@ -71,104 +63,155 @@ const Chamber = () => {
         toast.success("Chamber deleted successfully");
       }
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.message || "Failed to delete chamber";
-      toast.error(errorMessage);
+      toast.error(error.response?.data?.message || "Failed to delete chamber");
     } finally {
-      setIsLoading(false);
+      setDeletingChamber(null);
     }
   };
 
   return (
-    <div className="d-flex justify-content-center px-3">
-      <div className="card my-4 w-100" style={{ maxWidth: "700px" }}>
-        <div className="card-header pt-4 pb-2 bg-light">
-          <h5 className="m-0 text-center text-md-start">
-            Dry Chamber Management
-          </h5>
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{ minHeight: "100vh", padding: "1rem" }}
+    >
+      <div
+        className="card my-3"
+        style={{
+          width: "100%",
+          maxWidth: "500px",
+        }}
+      >
+        <div className="card-header pt-4 pb-2">
+          <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+            <h6 className="mb-2 mb-md-0 ">Dry Chamber Management</h6>
+          </div>
         </div>
 
         <div className="card-body">
-          <form onSubmit={handleSubmit}>
-            <div className="row g-3 mb-4">
-              <div className="col-12 col-md-6">
-                <input
-                  type="text"
-                  value={newChamber}
-                  onChange={(e) => setNewChamber(e.target.value)}
-                  className="form-control"
-                  placeholder="Enter Chamber Name"
-                  disabled={isLoading}
-                />
-              </div>
+          <form
+            onSubmit={formik.handleSubmit}
+            className="d-flex flex-column gap-3 mb-4 mx-auto"
+          >
+            <div className="w-100">
+              <label htmlFor="chamber_name" className="form-label fw-semibold">
+                Chamber Name
+              </label>
+              <input
+                type="text"
+                id="chamber_name"
+                name="chamber_name"
+                value={formik.values.chamber_name}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                disabled={isAdding}
+                className={`form-control ${
+                  formik.touched.chamber_name && formik.errors.chamber_name
+                    ? "is-invalid"
+                    : ""
+                }`}
+                placeholder="Enter Chamber Name"
+              />
 
-              <div className="col-12 col-md-6">
-                <input
-                  type="number"
-                  value={capacity}
-                  onChange={(e) => setCapacity(e.target.value)}
-                  className="form-control"
-                  placeholder="Enter Chamber Capacity"
-                  disabled={isLoading}
-                />
-              </div>
+              {formik.touched.chamber_name && formik.errors.chamber_name && (
+                <div className="invalid-feedback">
+                  {formik.errors.chamber_name}
+                </div>
+              )}
+            </div>
 
-              <div className="col-12 col-md-6">
-                <select
-                  onChange={(e) => setTag(e.target.value)}
-                  value={tag}
-                  className="form-control"
-                  disabled={isLoading}
-                >
-                  <option value="frozen">Frozen</option>
-                  <option value="dry">Dry</option>
-                </select>
-              </div>
+            <div className="w-100">
+              <label htmlFor="capacity" className="form-label fw-semibold">
+                Capacity
+              </label>
+              <input
+                type="text"
+                id="capacity"
+                name="capacity"
+                value={formik.values.capacity}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                disabled={isAdding}
+                className={`form-control ${
+                  formik.touched.capacity && formik.errors.capacity
+                    ? "is-invalid"
+                    : ""
+                }`}
+                placeholder="Enter Chamber Capacity"
+              />
+              {formik.touched.capacity && formik.errors.capacity && (
+                <div className="invalid-feedback">{formik.errors.capacity}</div>
+              )}
+            </div>
 
-              <div className="col-12 col-md-6">
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="btn btn-primary w-100"
-                >
-                  {isLoading ? <Spinner /> : "Add Chamber"}
-                </button>
-              </div>
+            <div className="w-100">
+              <label htmlFor="tag" className="form-label fw-semibold">
+                Tag
+              </label>
+              <select
+                id="tag"
+                name="tag"
+                value={formik.values.tag}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                disabled={isAdding}
+                className={`form-control ${
+                  formik.touched.tag && formik.errors.tag ? "is-invalid" : ""
+                }`}
+              >
+                <option value="frozen">Frozen</option>
+                <option value="dry">Dry</option>
+              </select>
+              {formik.touched.tag && formik.errors.tag && (
+                <div className="invalid-feedback">{formik.errors.tag}</div>
+              )}
+            </div>
+
+            <div className="text-center">
+              <button
+                type="submit"
+                disabled={isAdding}
+                className="btn btn-primary w-100"
+                style={{ maxWidth: "200px" }}
+              >
+                {isAdding ? <Spinner /> : "Add Chamber"}
+              </button>
             </div>
           </form>
 
-          <div className="categories-list">
+          <div className="categories-list text-center">
             <h6 className="mb-3">Existing Chambers</h6>
-            <div className="d-flex flex-wrap gap-2">
-              {chambers?.map((chamber) => (
+            <div className="d-flex flex-wrap justify-content-center gap-2">
+              {categories?.map((chamber) => (
                 <div
-                  key={chamber.id || chamber.chamber_name}
+                  key={chamber.chamber_name}
                   className={`badge ${
                     chamber.tag === "frozen" ? "bg-info" : "bg-success"
                   } d-flex align-items-center gap-2`}
-                  style={{
-                    fontSize: "0.9rem",
-                    padding: "8px 12px",
-                    cursor: "default",
-                  }}
+                  style={{ fontSize: "0.9rem", padding: "8px 12px" }}
                 >
-                  {chamber.chamber_name} ({chamber.tag.toUpperCase()})
+                  {chamber.chamber_name}
                   <button
                     onClick={() => handleDelete(chamber.chamber_name)}
+                    disabled={
+                      deletingChamber === chamber.chamber_name || isAdding
+                    }
                     className="btn btn-link text-white p-0 ms-2"
                     type="button"
                     style={{ fontSize: "1rem", lineHeight: 1 }}
-                    disabled={isLoading}
                   >
-                    <i className="fas fa-times"></i>
+                    {deletingChamber === chamber.chamber_name ? (
+                      <Spinner />
+                    ) : (
+                      <i className="fas fa-times"></i>
+                    )}
                   </button>
                 </div>
               ))}
             </div>
 
-            {chambers?.length === 0 && !isLoading && (
-              <div className="text-center mt-3 text-muted">
-                No chambers found. Add a new one above.
+            {categories?.length === 0 && (
+              <div className="d-flex flex-column flex-md-row gap-2 align-items-center justify-content-center mt-3">
+                <p className="text-muted mb-0">No chamber found</p>
               </div>
             )}
           </div>
