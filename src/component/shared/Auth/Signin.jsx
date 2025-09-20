@@ -17,7 +17,7 @@ const Signin = () => {
             email: '',
             userpass: ''
         },
-        // validationSchema,
+        validationSchema,
         onSubmit: async(formData) => {
             setIsLoading(true)
             const response = await LoginService(formData)
@@ -54,6 +54,7 @@ const Signin = () => {
                                                     <input
                                                         type="email"
                                                         name="email"
+                                                        autoComplete='false'
                                                         className="form-control"
                                                         placeholder="Email"
                                                         aria-label="Email"
@@ -72,6 +73,7 @@ const Signin = () => {
                                                     <input
                                                         type="password"
                                                         name="userpass"
+                                                        autoComplete='false'
                                                         className="form-control"
                                                         placeholder="Password"
                                                         aria-label="Password"

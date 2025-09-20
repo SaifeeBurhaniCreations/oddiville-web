@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { handleModifyData, handlePostData } from '../../../../redux/ServiceDataSlice'
 import Chamber from '../Chamber/Chamber'
 import Banners from '../../../shared/Banners/Banners'
+import { itemFormValidation } from '../../../../schemas/ItemForm'
 
 
 const CreateService = () => {
@@ -36,6 +37,7 @@ const CreateService = () => {
 
   const form = useFormik({
     initialValues,
+    validationSchema: itemFormValidation,
     onSubmit: async (formData) => {
       const formPayload = new FormData();
 
@@ -121,26 +123,27 @@ const CreateService = () => {
                     <h6>Manage Items</h6>
                   </div>
                   <div className="card-body grid-cs pb-4">
-                    <Banners name='Uplaod Item' getBanners={fetchedBanners} deleteBanners={deleteBanners} setDeleteBanners={setDeleteBanners} fetchBanners={fetchBanners} />
+                    <Banners name='Upload Item' getBanners={fetchedBanners} deleteBanners={deleteBanners} setDeleteBanners={setDeleteBanners} fetchBanners={fetchBanners} formError={form.errors.sample_image} formTouched={form.touched.sample_image} />
                     <div className="grid-cs">
-                      <div>
-                        <input type="text" value={form?.values?.item_name} onChange={form.handleChange} className="form-control" name="item_name" placeholder="Item Name" id="" />
+                      <div className='form-floating'>
+                        <input type="text" value={form?.values?.item_name} onChange={form.handleChange} className={"form-control " + (form.errors.item_name && form.touched.item_name)} name="item_name" placeholder="Item Name" id="" />
+                        <label htmlFor="" className='fw-normal'>Item Name</label>
                       </div>
-                      <div>
-                        <input type="text" value={form?.values?.description} onChange={form.handleChange} className="form-control" name="description" placeholder="Service Description" id="" />
+                      <div className='form-floating'>
+                        <input type="text" value={form?.values?.description} onChange={form.handleChange} className={"form-control " + (form.errors.description && form.touched.description)} name="description" placeholder="Service Description" id="" />
                       </div>
-                      <div>
-                        <input type="date" value={form?.values?.warehoused_date} onChange={form.handleChange} className="form-control" name="warehoused_date" id="" />
+                      <div className='form-floating'>
+                        <input type="date" value={form?.values?.warehoused_date} onChange={form.handleChange} className={"form-control " + (form.errors.warehoused_date && form.touched.warehoused_date)} name="warehoused_date" id="" />
                       </div>
-                      <div>
-                        <input type="text" value={form?.values?.quantity_unit} onChange={form.handleChange} className="form-control" name="quantity_unit" placeholder="Item Quantity Unit" id="" />
+                      <div className='form-floating'>
+                        <input type="text" value={form?.values?.quantity_unit} onChange={form.handleChange} className={"form-control " + (form.errors.quantity_unit && form.touched.quantity_unit)} name="quantity_unit" placeholder="Item Quantity Unit" id="" />
                       </div>
-                      <div>
+                      <div className='form-floating'>
                         <select
                           name="chamber_id"
                           value={form.values.chamber_id || ''}
                           onChange={form.handleChange}
-                          className="form-control"
+                          className={"form-control " + (form.errors.chamber_id && form.touched.chamber_id)}
                           id=""
                         >
                           <option value="">Select Category</option>
