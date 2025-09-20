@@ -9,7 +9,7 @@ import Spinner from "../../../shared/Spinner/Spinner";
 
 const Chamber = () => {
   const dispatch = useDispatch();
-  const categories = useSelector((state) => state.ServiceDataSlice.chamber);
+  const chambers = useSelector(state => state.ServiceDataSlice.chamber);
 
   const [isLoading, setIsLoading] = useState(false);
   const [newChamber, setNewChamber] = useState("");
@@ -18,18 +18,27 @@ const Chamber = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!newChamber.trim()) {
+    const chamberName = newChamber.trim();
+    const chamberCapacity = Number(capacity);
+
+    if (!chamberName) {
       toast.error("Please enter a chamber name");
+      return;
+    }
+
+    if (Number.isNaN(chamberCapacity) || chamberCapacity <= 0) {
+      toast.error("Please enter a valid, positive number for capacity");
       return;
     }
 
     setIsLoading(true);
     try {
       const response = await createChamber({
-        chamber_name: newChamber.trim(),
+        chamber_name: chamberName,
         tag,
-        capacity: Number(capacity),
+        capacity: chamberCapacity,
       });
+
       if (response.status === 201) {
         dispatch({
           type: "ServiceDataSlice/handlePostCategory",
@@ -37,27 +46,36 @@ const Chamber = () => {
         });
         setNewChamber("");
         setCapacity("");
-        toast.success("Chamber added successfully");
+        toast.success("Chamber added successfully 🎉");
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to add chamber");
+      const errorMessage =
+        error.response?.data?.message ||
+        "Failed to add chamber due to a network or server error.";
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleDelete = async (categoryName) => {
+  const handleDelete = async (chamberName) => {
+    setIsLoading(true);
+
     try {
-      const response = await removeChamber(categoryName);
+      const response = await removeChamber(chamberName);
       if (response.status === 200) {
         dispatch({
           type: "ServiceDataSlice/handleRemoveCategory",
-          payload: categoryName,
+          payload: chamberName,
         });
         toast.success("Chamber deleted successfully");
       }
     } catch (error) {
-      toast.error("Failed to delete chamber");
+      const errorMessage =
+        error.response?.data?.message || "Failed to delete chamber";
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -71,43 +89,58 @@ const Chamber = () => {
         </div>
 
         <div className="card-body">
-          <div className="d-flex flex-column gap-3 mb-4">
-            <input
-              type="text"
-              value={newChamber}
-              onChange={(e) => setNewChamber(e.target.value)}
-              className="form-control"
-              placeholder="Enter Chamber Name"
-            />
-            <input
-              type="number"
-              value={capacity}
-              onChange={(e) => setCapacity(e.target.value)}
-              className="form-control"
-              placeholder="Enter Chamber Capacity"
-            />
-            <select
-              onChange={(e) => setTag(e.target.value)}
-              value={tag}
-              className="form-control"
-            >
-              <option value="frozen">Frozen</option>
-              <option value="dry">Dry</option>
-            </select>
-            <button
-              type="button"
-              onClick={handleSubmit}
-              disabled={isLoading}
-              className="btn btn-primary"
-            >
-              {isLoading ? <Spinner /> : "Add"}
-            </button>
-          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="row g-3 mb-4">
+              <div className="col-12 col-md-6">
+                <input
+                  type="text"
+                  value={newChamber}
+                  onChange={(e) => setNewChamber(e.target.value)}
+                  className="form-control"
+                  placeholder="Enter Chamber Name"
+                  disabled={isLoading}
+                />
+              </div>
+
+              <div className="col-12 col-md-6">
+                <input
+                  type="number"
+                  value={capacity}
+                  onChange={(e) => setCapacity(e.target.value)}
+                  className="form-control"
+                  placeholder="Enter Chamber Capacity"
+                  disabled={isLoading}
+                />
+              </div>
+
+              <div className="col-12 col-md-6">
+                <select
+                  onChange={(e) => setTag(e.target.value)}
+                  value={tag}
+                  className="form-control"
+                  disabled={isLoading}
+                >
+                  <option value="frozen">Frozen</option>
+                  <option value="dry">Dry</option>
+                </select>
+              </div>
+
+              <div className="col-12 col-md-6">
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="btn btn-primary w-100"
+                >
+                  {isLoading ? <Spinner /> : "Add Chamber"}
+                </button>
+              </div>
+            </div>
+          </form>
 
           <div className="categories-list">
             <h6 className="mb-3">Existing Chambers</h6>
             <div className="d-flex flex-wrap gap-2">
-              {categories?.map((chamber) => (
+              {chambers?.map((chamber) => (
                 <div
                   key={chamber.id || chamber.chamber_name}
                   className={`badge ${
@@ -119,12 +152,13 @@ const Chamber = () => {
                     cursor: "default",
                   }}
                 >
-                  {chamber.chamber_name}
+                  {chamber.chamber_name} ({chamber.tag.toUpperCase()})
                   <button
                     onClick={() => handleDelete(chamber.chamber_name)}
                     className="btn btn-link text-white p-0 ms-2"
                     type="button"
                     style={{ fontSize: "1rem", lineHeight: 1 }}
+                    disabled={isLoading}
                   >
                     <i className="fas fa-times"></i>
                   </button>
@@ -132,10 +166,9 @@ const Chamber = () => {
               ))}
             </div>
 
-            {categories?.length === 0 && (
-              <div className="d-flex flex-column flex-md-row gap-2 align-items-center mt-3 justify-content-center">
-                <Spinner />
-                <p className="text-muted mb-0">No chamber found</p>
+            {chambers?.length === 0 && !isLoading && (
+              <div className="text-center mt-3 text-muted">
+                No chambers found. Add a new one above.
               </div>
             )}
           </div>
