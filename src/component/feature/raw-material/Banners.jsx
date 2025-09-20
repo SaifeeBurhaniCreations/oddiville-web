@@ -58,6 +58,7 @@ const Banners = ({
           <input
             className="hide-me"
             type="file"
+            accept="image/png, image/jpeg"
             ref={bannerRef}
             onChange={(e) => updateBanner(e.target.files[0])}
             style={{ visibility: "hidden" }}

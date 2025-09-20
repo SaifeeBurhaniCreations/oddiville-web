@@ -15,6 +15,7 @@ import {
 } from "../../../../redux/ServiceDataSlice";
 import Chamber from "../Chamber/Chamber";
 import Banners from "../../../shared/Banners/Banners";
+import { itemFormValidation } from "../../../../schemas/ItemForm";
 
 const CreateService = () => {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ const CreateService = () => {
 
   const form = useFormik({
     initialValues,
+    validationSchema: itemFormValidation,
     onSubmit: async (formData) => {
       const formPayload = new FormData();
 
@@ -123,65 +125,107 @@ const CreateService = () => {
                   </div>
                   <div className="card-body grid-cs pb-4">
                     <Banners
-                      name="Uplaod Item"
+                      name="Upload Item"
                       getBanners={fetchedBanners}
                       deleteBanners={deleteBanners}
                       setDeleteBanners={setDeleteBanners}
                       fetchBanners={fetchBanners}
+                      formError={form.errors.sample_image}
+                      formTouched={form.touched.sample_image}
                     />
                     <div className="grid-cs">
-                      <div>
+                      <div className="form-floating">
                         <input
                           type="text"
                           value={form?.values?.item_name}
                           onChange={form.handleChange}
-                          className="form-control"
+                          className={
+                            "form-control " +
+                            (form.errors.item_name && form.touched.item_name
+                              ? "is-invalid"
+                              : "")
+                          }
                           name="item_name"
                           placeholder="Item Name"
                           id=""
                         />
+                        <label htmlFor="" className="fw-normal">
+                          Item Name
+                        </label>
                       </div>
-                      <div>
+                      <div className="form-floating">
                         <input
                           type="text"
                           value={form?.values?.description}
                           onChange={form.handleChange}
-                          className="form-control"
+                          className={
+                            "form-control " +
+                            (form.errors.description && form.touched.description
+                              ? "is-invalid"
+                              : "")
+                          }
                           name="description"
                           placeholder="Service Description"
                           id=""
                         />
+                        <label htmlFor="" className="fw-normal">
+                          Service Description
+                        </label>
                       </div>
-                      <div>
+                      <div className="form-floating">
                         <input
                           type="date"
                           value={form?.values?.warehoused_date}
                           onChange={form.handleChange}
-                          className="form-control"
+                          className={
+                            "form-control " +
+                            (form.errors.warehoused_date &&
+                            form.touched.warehoused_date
+                              ? "is-invalid"
+                              : "")
+                          }
                           name="warehoused_date"
                           id=""
                         />
+                        <label htmlFor="" className="fw-normal">
+                          Date
+                        </label>
                       </div>
-                      <div>
+                      <div className="form-floating">
                         <input
                           type="text"
                           value={form?.values?.quantity_unit}
                           onChange={form.handleChange}
-                          className="form-control"
+                          className={
+                            "form-control " +
+                            (form.errors.quantity_unit &&
+                            form.touched.quantity_unit
+                              ? "is-invalid"
+                              : "")
+                          }
                           name="quantity_unit"
                           placeholder="Item Quantity Unit"
                           id=""
                         />
+                        <label htmlFor="" className="fw-normal">
+                          Item Quantity Unit
+                        </label>
                       </div>
-                      <div>
+                      <div className="form-floating">
                         <select
                           name="chamber_id"
                           value={form.values.chamber_id || ""}
                           onChange={form.handleChange}
-                          className="form-control"
+                          placeholder="Select Category"
+                          className={
+                            "form-control " +
+                            (form.errors.chamber_id && form.touched.chamber_id
+                              ? "is-invalid"
+                              : "")
+                          }
                           id=""
                         >
-                          <option value="">Select Category</option>
+                          <option value={""}>Select Category</option>
                           {chambers?.map((category, index) => {
                             if (category.tag === "dry") {
                               return (
@@ -195,7 +239,24 @@ const CreateService = () => {
                             }
                           })}
                         </select>
+                        <label htmlFor="">Select Category</label>
                       </div>
+                    </div>
+                    <div className="card-header grid-cs">
+                      <button
+                        type="button"
+                        onClick={() => navigate("/dry-warehouse")}
+                        className="btn btn-secondary btn-lg btn-sm m-0"
+                      >
+                        Exit
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="btn btn-primary btn-lg btn-sm m-0"
+                      >
+                        Save {isLoading && <Spinner />}
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -243,27 +304,29 @@ const CreateService = () => {
                 </div> */}
               </div>
             </div>
-            <div className="col-md-4">
-              <div className="card mb-3">
-                <div className="card-header gtc-1-2  grid-cs">
-                  <button
-                    type="button"
-                    onClick={() => navigate("/dry-warehouse")}
-                    className="btn btn-secondary btn-lg m-0"
-                  >
-                    Exit
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="btn btn-primary btn-lg m-0"
-                  >
-                    Save {isLoading && <Spinner />}
-                  </button>
-                </div>
-              </div>
+            <div className="row">
+              <div className="col-md-8 col-sm-4">
+                {/* <div className="card mb-3"> */}
+                {/* <div className="card-header gtc-1-2  grid-cs">
+                    <button
+                      type="button"
+                      onClick={() => navigate("/dry-warehouse")}
+                      className="btn btn-secondary btn-lg btn-sm m-0"
+                    >
+                      Exit
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isLoading}
+                      className="btn btn-primary btn-lg btn-sm m-0"
+                    >
+                      Save {isLoading && <Spinner />}
+                    </button>
+                  </div> */}
+                {/* </div> */}
 
-              {/* <Chamber /> */}
+                {/* <Chamber /> */}
+              </div>
             </div>
           </div>
         </form>
