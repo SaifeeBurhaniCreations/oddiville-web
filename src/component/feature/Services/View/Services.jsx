@@ -13,6 +13,7 @@ import {
   handleFetchData,
   handleRemoveData,
 } from "../../../../redux/ServiceDataSlice";
+
 import Spinner from "../../../shared/Spinner/Spinner";
 
 const Services = () => {

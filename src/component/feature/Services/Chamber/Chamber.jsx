@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createChamber,
   removeChamber,
+  fetchChamber,
 } from "../../../../services/DryChamberService";
 import { toast } from "react-toastify";
 import Spinner from "../../../shared/Spinner/Spinner";
+import { handleFetchCategory } from "../../../../redux/ServiceDataSlice";
 
 const Chamber = () => {
   const dispatch = useDispatch();
@@ -15,6 +17,31 @@ const Chamber = () => {
   const [newChamber, setNewChamber] = useState("");
   const [tag, setTag] = useState("frozen");
   const [capacity, setCapacity] = useState("");
+
+  useEffect(() => {
+    const loadChambers = async () => {
+      if (!categories || categories.length === 0) {
+        try {
+          const res = await fetchChamber();
+          if (res.status === 200) {
+            dispatch({
+              type: "ServiceDataSlice/handleFetchCategory",
+              payload: res.data,
+            });
+          }
+        } catch (error) {
+          console.error(error);
+          toast.error("Failed to fetch chambers");
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        setIsLoading(false);
+      }
+    };
+
+    loadChambers();
+  }, [categories, dispatch]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,6 +87,11 @@ const Chamber = () => {
       toast.error("Failed to delete chamber");
     }
   };
+
+  // return(<>
+  // {console.log(categories)
+  // }
+  // </>)
 
   return (
     <div className="d-flex justify-content-center px-3">
@@ -107,37 +139,49 @@ const Chamber = () => {
           <div className="categories-list">
             <h6 className="mb-3">Existing Chambers</h6>
             <div className="d-flex flex-wrap gap-2">
-              {categories?.map((chamber) => (
-                <div
-                  key={chamber.id || chamber.chamber_name}
-                  className={`badge ${
-                    chamber.tag === "frozen" ? "bg-info" : "bg-success"
-                  } d-flex align-items-center gap-2`}
-                  style={{
-                    fontSize: "0.9rem",
-                    padding: "8px 12px",
-                    cursor: "default",
-                  }}
-                >
-                  {chamber.chamber_name}
-                  <button
-                    onClick={() => handleDelete(chamber.chamber_name)}
-                    className="btn btn-link text-white p-0 ms-2"
-                    type="button"
-                    style={{ fontSize: "1rem", lineHeight: 1 }}
-                  >
-                    <i className="fas fa-times"></i>
-                  </button>
+              {categories?.length === 0 ? (
+                <div className="d-flex flex-column flex-md-row gap-2 align-items-center mt-3 justify-content-center">
+                  {/* <Spinner /> */}
+                  <p className="text-muted mb-0">No chamber found</p>
                 </div>
-              ))}
+              ) : isLoading === true ? (
+                <div className="d-flex flex-column flex-md-row gap-2 align-items-center mt-3 justify-content-center">
+                  <Spinner />
+                  <p className="text-muted mb-0">No chamber found</p>
+                </div>
+              ) : (
+                categories?.map((chamber) => (
+                  <div
+                    key={chamber.id || chamber.chamber_name}
+                    className={`badge ${
+                      chamber.tag === "frozen" ? "bg-info" : "bg-success"
+                    } d-flex align-items-center gap-2`}
+                    style={{
+                      fontSize: "0.9rem",
+                      padding: "8px 12px",
+                      cursor: "default",
+                    }}
+                  >
+                    {chamber.chamber_name}
+                    <button
+                      onClick={() => handleDelete(chamber.id)}
+                      className="btn btn-link text-white p-0 ms-2"
+                      type="button"
+                      style={{ fontSize: "1rem", lineHeight: 1 }}
+                    >
+                      <i className="fas fa-times"></i>
+                    </button>
+                  </div>
+                ))
+              )}
             </div>
 
-            {categories?.length === 0 && (
+            {/* {isLoading === true && (
               <div className="d-flex flex-column flex-md-row gap-2 align-items-center mt-3 justify-content-center">
                 <Spinner />
                 <p className="text-muted mb-0">No chamber found</p>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>

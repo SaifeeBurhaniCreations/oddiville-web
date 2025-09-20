@@ -33,7 +33,7 @@ const CreateService = () => {
   const [initialValues, setInitialValues] = useState({
     item_name: "",
     chamber_id: "",
-    warehoused_date: Date.now(),
+    warehoused_date: new Date(),
     description: "",
     quantity_unit: "",
     sample_image: null,
@@ -56,6 +56,7 @@ const CreateService = () => {
       if (banners) {
         formPayload.append("sample_image", banners);
       }
+      console.log(formPayload);
 
       // // Log the formPayload
       // const payloadObject = {};
@@ -69,6 +70,8 @@ const CreateService = () => {
       setIsLoading(true);
       try {
         if (!id) {
+          console.log("pressed");
+          
           const response = await create(formPayload);
           if (response.status === 201) {
             dispatch(handlePostData(response.data));
@@ -105,6 +108,7 @@ const CreateService = () => {
       const data = serviceData?.find((value) => value.id === id);
       form.setValues(data);
       setFetchedBanners(data?.sample_image);
+      form.setFieldValue("sample_image", data?.sample_image || null);
     }
   }, [id]);
 
@@ -132,6 +136,7 @@ const CreateService = () => {
                       fetchBanners={fetchBanners}
                       formError={form.errors.sample_image}
                       formTouched={form.touched.sample_image}
+                      setFieldValue={form.setFieldValue}
                     />
                     <div className="grid-cs">
                       <div className="form-floating">
@@ -175,7 +180,13 @@ const CreateService = () => {
                       <div className="form-floating">
                         <input
                           type="date"
-                          value={form?.values?.warehoused_date}
+                          value={
+                            form?.values?.warehoused_date
+                              ? new Date(form.values.warehoused_date)
+                                  .toISOString()
+                                  .split("T")[0]
+                              : ""
+                          }
                           onChange={form.handleChange}
                           className={
                             "form-control " +
@@ -302,30 +313,6 @@ const CreateService = () => {
                     </div>
                   </div>
                 </div> */}
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-md-8 col-sm-4">
-                {/* <div className="card mb-3"> */}
-                {/* <div className="card-header gtc-1-2  grid-cs">
-                    <button
-                      type="button"
-                      onClick={() => navigate("/dry-warehouse")}
-                      className="btn btn-secondary btn-lg btn-sm m-0"
-                    >
-                      Exit
-                    </button>
-                    <button
-                      type="submit"
-                      disabled={isLoading}
-                      className="btn btn-primary btn-lg btn-sm m-0"
-                    >
-                      Save {isLoading && <Spinner />}
-                    </button>
-                  </div> */}
-                {/* </div> */}
-
-                {/* <Chamber /> */}
               </div>
             </div>
           </div>

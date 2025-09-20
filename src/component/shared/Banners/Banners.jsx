@@ -10,27 +10,61 @@ const Banners = ({
   formTouched,
   name = "upload banner",
   onFileChange,
+  setFieldValue,
 }) => {
   const bannerRef = useRef();
   const [banner, setBanner] = useState({
     banner: null,
     preview: "",
   });
+  const [typeCheckError, setTypeCheckError] = useState("");
 
   const updateBanner = (file) => {
+    if (!file) return;
+    // if (!["image/png", "image/jpeg"].includes(file.type)) {
+    //   setTypeCheck("Only PNG and JPG formats allowed");
+    // } else {
     const reader = new FileReader();
-    reader.onload = () => {
-      setBanner({
-        banner: file,
-        preview: reader.result,
-      });
-    };
-    reader.readAsDataURL(file);
+    reader.onload = (e) => {
+      const arr = new Uint8Array(e.target.result).subarray(0, 4);
+      let header = "";
+      for (let i = 0; i < arr.length; i++) {
+        header += arr[i].toString(16);
+      }
+      const isPNG = header.startsWith("89504e47");
+      const isJPG = header.startsWith("ffd8");
 
-    if (onFileChange) {
-      onFileChange({ target: { files: [file] } });
-    }
+      if (isPNG || isJPG) {
+        const previewReader = new FileReader();
+        previewReader.onload = () => {
+          setBanner({
+            banner: file,
+            preview: previewReader.result,
+          });
+          if(setFieldValue){
+            setFieldValue("sample_image", file)
+          }
+        };
+        previewReader.readAsDataURL(file);
+        if (onFileChange) {
+          onFileChange({ target: { files: [file] } });
+        }
+      } else {
+        setBanner({ banner: null, preview: "" });
+        setTypeCheckError("Only valid PNG and JPG images are allowed");
+        if (bannerRef.current) {
+          bannerRef.current.value = "";
+        }
+        if(setFieldValue){
+          setFieldValue("sample_image", null)
+        }
+      }
+    };
+
+    reader.readAsArrayBuffer(file.slice(0, 4));
+    // }
   };
+
 
   useEffect(() => {
     fetchBanners(banner.banner);
@@ -136,7 +170,11 @@ const Banners = ({
                   </button>
                   {formError && formTouched ? (
                     <sub className="text-danger text-center">{formError}</sub>
-                  ) : null}
+                  ) : (
+                    <sub className="text-danger text-center">
+                      {typeCheckError}
+                    </sub>
+                  )}
                 </div>
               )}
             </div>

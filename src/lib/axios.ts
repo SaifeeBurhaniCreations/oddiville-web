@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const API_URL = "https://oddiville.onrender.com/api";
+// const API_URL = "https://oddiville.onrender.com/api";
 // const API_URL = "https://oddiapi.sbcws.com/api";
+const API_URL = "http://210.79.128.221:8022/api"
 
 const api = axios.create({
   baseURL: API_URL,
