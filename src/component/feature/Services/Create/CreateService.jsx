@@ -1,39 +1,43 @@
-import { useFormik } from 'formik'
-import { useEffect, useState } from 'react'
-import { create, fetchDryWarehouse, modify } from '../../../../services/DryChamberService'
-import Spinner from '../../../shared/Spinner/Spinner'
-import { useNavigate, useParams } from 'react-router-dom'
-import { toast } from 'react-toastify';
-import { useDispatch, useSelector } from 'react-redux'
-import { handleModifyData, handlePostData } from '../../../../redux/ServiceDataSlice'
-import Chamber from '../Chamber/Chamber'
-import Banners from '../../../shared/Banners/Banners'
-import { itemFormValidation } from '../../../../schemas/ItemForm'
-
+import { useFormik } from "formik";
+import { useEffect, useState } from "react";
+import {
+  create,
+  fetchDryWarehouse,
+  modify,
+} from "../../../../services/DryChamberService";
+import Spinner from "../../../shared/Spinner/Spinner";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  handleModifyData,
+  handlePostData,
+} from "../../../../redux/ServiceDataSlice";
+import Chamber from "../Chamber/Chamber";
+import Banners from "../../../shared/Banners/Banners";
+import { itemFormValidation } from "../../../../schemas/ItemForm";
 
 const CreateService = () => {
-
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const param = useParams()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const param = useParams();
   const { id } = param;
 
-  const serviceData = useSelector(state => state.ServiceDataSlice.data)
-  const chambers = useSelector(state => state.ServiceDataSlice.chamber);
+  const serviceData = useSelector((state) => state.ServiceDataSlice.data);
+  const chambers = useSelector((state) => state.ServiceDataSlice.chamber);
 
-
-  const [isLoading, setIsLoading] = useState(false)
-  const [banners, setBanners] = useState()
-  const [fetchedBanners, setFetchedBanners] = useState()
-  const [deleteBanners, setDeleteBanners] = useState()
+  const [isLoading, setIsLoading] = useState(false);
+  const [banners, setBanners] = useState();
+  const [fetchedBanners, setFetchedBanners] = useState();
+  const [deleteBanners, setDeleteBanners] = useState();
   const [initialValues, setInitialValues] = useState({
-    item_name: '',
-    chamber_id: '',
+    item_name: "",
+    chamber_id: "",
     warehoused_date: Date.now(),
-    description: '',
-    quantity_unit: '',
-    sample_image: null
-  })
+    description: "",
+    quantity_unit: "",
+    sample_image: null,
+  });
 
   const form = useFormik({
     initialValues,
@@ -47,7 +51,6 @@ const CreateService = () => {
       formPayload.append("description", formData.description);
       formPayload.append("quantity_unit", formData.quantity_unit);
       formPayload.append("warehoused_date", formData.warehoused_date);
-
 
       // Add sample_image if exists
       if (banners) {
@@ -69,10 +72,10 @@ const CreateService = () => {
           const response = await create(formPayload);
           if (response.status === 201) {
             dispatch(handlePostData(response.data));
-            navigate('/dry-warehouse');
-            toast.success('Item is Added !!');
+            navigate("/dry-warehouse");
+            toast.success("Item is Added !!");
           } else {
-            toast.error('Failed to create service.');
+            toast.error("Failed to create service.");
           }
         } else {
           // Add deleteBanner flag if updating
@@ -83,32 +86,31 @@ const CreateService = () => {
           const response = await modify({ formData: formPayload, id });
           if (response.status === 200) {
             dispatch(handleModifyData(response.data));
-            navigate('/dry-warehouse');
-            toast.success('Item is Updated !!');
+            navigate("/dry-warehouse");
+            toast.success("Item is Updated !!");
           } else {
-            toast.error('Failed to update service.');
+            toast.error("Failed to update service.");
           }
         }
       } catch (error) {
-        toast.error('An error occurred while processing the service.');
+        toast.error("An error occurred while processing the service.");
       } finally {
         setIsLoading(false);
       }
-    }
+    },
   });
 
   useEffect(() => {
     if (id) {
-      const data = serviceData?.find(value => value.id === id)
-      form.setValues(data)
-      setFetchedBanners(data?.sample_image)
+      const data = serviceData?.find((value) => value.id === id);
+      form.setValues(data);
+      setFetchedBanners(data?.sample_image);
     }
-  }, [id])
+  }, [id]);
 
   const fetchBanners = (data) => {
-    setBanners(data)
-  }
-
+    setBanners(data);
+  };
 
   return (
     <>
@@ -117,45 +119,144 @@ const CreateService = () => {
           <div className="row align-items-stretch">
             <div className="col-md-8">
               <div className="grid-cs gtc-1">
-
                 <div className="card">
                   <div className="card-header pt-4 pb-2">
                     <h6>Manage Items</h6>
                   </div>
                   <div className="card-body grid-cs pb-4">
-                    <Banners name='Upload Item' getBanners={fetchedBanners} deleteBanners={deleteBanners} setDeleteBanners={setDeleteBanners} fetchBanners={fetchBanners} formError={form.errors.sample_image} formTouched={form.touched.sample_image} />
+                    <Banners
+                      name="Upload Item"
+                      getBanners={fetchedBanners}
+                      deleteBanners={deleteBanners}
+                      setDeleteBanners={setDeleteBanners}
+                      fetchBanners={fetchBanners}
+                      formError={form.errors.sample_image}
+                      formTouched={form.touched.sample_image}
+                    />
                     <div className="grid-cs">
-                      <div className='form-floating'>
-                        <input type="text" value={form?.values?.item_name} onChange={form.handleChange} className={"form-control " + (form.errors.item_name && form.touched.item_name)} name="item_name" placeholder="Item Name" id="" />
-                        <label htmlFor="" className='fw-normal'>Item Name</label>
+                      <div className="form-floating">
+                        <input
+                          type="text"
+                          value={form?.values?.item_name}
+                          onChange={form.handleChange}
+                          className={
+                            "form-control " +
+                            (form.errors.item_name && form.touched.item_name
+                              ? "is-invalid"
+                              : "")
+                          }
+                          name="item_name"
+                          placeholder="Item Name"
+                          id=""
+                        />
+                        <label htmlFor="" className="fw-normal">
+                          Item Name
+                        </label>
                       </div>
-                      <div className='form-floating'>
-                        <input type="text" value={form?.values?.description} onChange={form.handleChange} className={"form-control " + (form.errors.description && form.touched.description)} name="description" placeholder="Service Description" id="" />
+                      <div className="form-floating">
+                        <input
+                          type="text"
+                          value={form?.values?.description}
+                          onChange={form.handleChange}
+                          className={
+                            "form-control " +
+                            (form.errors.description && form.touched.description
+                              ? "is-invalid"
+                              : "")
+                          }
+                          name="description"
+                          placeholder="Service Description"
+                          id=""
+                        />
+                        <label htmlFor="" className="fw-normal">
+                          Service Description
+                        </label>
                       </div>
-                      <div className='form-floating'>
-                        <input type="date" value={form?.values?.warehoused_date} onChange={form.handleChange} className={"form-control " + (form.errors.warehoused_date && form.touched.warehoused_date)} name="warehoused_date" id="" />
+                      <div className="form-floating">
+                        <input
+                          type="date"
+                          value={form?.values?.warehoused_date}
+                          onChange={form.handleChange}
+                          className={
+                            "form-control " +
+                            (form.errors.warehoused_date &&
+                            form.touched.warehoused_date
+                              ? "is-invalid"
+                              : "")
+                          }
+                          name="warehoused_date"
+                          id=""
+                        />
+                        <label htmlFor="" className="fw-normal">
+                          Date
+                        </label>
                       </div>
-                      <div className='form-floating'>
-                        <input type="text" value={form?.values?.quantity_unit} onChange={form.handleChange} className={"form-control " + (form.errors.quantity_unit && form.touched.quantity_unit)} name="quantity_unit" placeholder="Item Quantity Unit" id="" />
+                      <div className="form-floating">
+                        <input
+                          type="text"
+                          value={form?.values?.quantity_unit}
+                          onChange={form.handleChange}
+                          className={
+                            "form-control " +
+                            (form.errors.quantity_unit &&
+                            form.touched.quantity_unit
+                              ? "is-invalid"
+                              : "")
+                          }
+                          name="quantity_unit"
+                          placeholder="Item Quantity Unit"
+                          id=""
+                        />
+                        <label htmlFor="" className="fw-normal">
+                          Item Quantity Unit
+                        </label>
                       </div>
-                      <div className='form-floating'>
+                      <div className="form-floating">
                         <select
                           name="chamber_id"
-                          value={form.values.chamber_id || ''}
+                          value={form.values.chamber_id || ""}
                           onChange={form.handleChange}
-                          className={"form-control " + (form.errors.chamber_id && form.touched.chamber_id)}
+                          placeholder="Select Category"
+                          className={
+                            "form-control " +
+                            (form.errors.chamber_id && form.touched.chamber_id
+                              ? "is-invalid"
+                              : "")
+                          }
                           id=""
                         >
-                          <option value="">Select Category</option>
+                          <option value={""}>Select Category</option>
                           {chambers?.map((category, index) => {
-                            if(category.tag === 'dry') {
+                            if (category.tag === "dry") {
                               return (
-                                <option value={category.chamber_name} key={index}>{category.chamber_name}</option>
-                              )
+                                <option
+                                  value={category.chamber_name}
+                                  key={index}
+                                >
+                                  {category.chamber_name}
+                                </option>
+                              );
                             }
                           })}
                         </select>
+                        <label htmlFor="">Select Category</label>
                       </div>
+                    </div>
+                    <div className="card-header grid-cs">
+                      <button
+                        type="button"
+                        onClick={() => navigate("/dry-warehouse")}
+                        className="btn btn-secondary btn-lg btn-sm m-0"
+                      >
+                        Exit
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="btn btn-primary btn-lg btn-sm m-0"
+                      >
+                        Save {isLoading && <Spinner />}
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -201,26 +302,37 @@ const CreateService = () => {
                     </div>
                   </div>
                 </div> */}
-
               </div>
-
             </div>
-            <div className="col-md-4">
-              <div className="card mb-3">
-                <div className="card-header gtc-1-2  grid-cs">
-                  <button type='button' onClick={() => navigate('/dry-warehouse')} className='btn btn-secondary btn-lg m-0'>Exit</button>
-                  <button type='submit' disabled={isLoading} className='btn btn-primary btn-lg m-0'>Save {isLoading && <Spinner />}</button>
-                </div>
+            <div className="row">
+              <div className="col-md-8 col-sm-4">
+                {/* <div className="card mb-3"> */}
+                {/* <div className="card-header gtc-1-2  grid-cs">
+                    <button
+                      type="button"
+                      onClick={() => navigate("/dry-warehouse")}
+                      className="btn btn-secondary btn-lg btn-sm m-0"
+                    >
+                      Exit
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isLoading}
+                      className="btn btn-primary btn-lg btn-sm m-0"
+                    >
+                      Save {isLoading && <Spinner />}
+                    </button>
+                  </div> */}
+                {/* </div> */}
+
+                {/* <Chamber /> */}
               </div>
-
-
-              <Chamber />
             </div>
           </div>
         </form>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default CreateService
+export default CreateService;

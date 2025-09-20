@@ -125,11 +125,18 @@ const Banners = ({
                   <button
                     type="button"
                     onClick={() => bannerRef.current?.click()}
-                    className="btn btn-default"
+                    className={
+                      "btn btn-default " +
+                      (formError && formTouched
+                        ? "border border-danger text-danger"
+                        : "")
+                    }
                   >
                     <i className="fa-solid fa-plus" /> &nbsp; {name}
                   </button>
-                  {/* <sub className="text-danger">Only PNG and JPG format supported</sub> */}
+                  {formError && formTouched ? (
+                    <sub className="text-danger text-center">{formError}</sub>
+                  ) : null}
                 </div>
               )}
             </div>

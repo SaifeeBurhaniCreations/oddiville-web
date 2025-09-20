@@ -7,6 +7,7 @@ import Lane from "../../component/feature/Lane/View/Lane";
 import RawMaterial from "../../component/feature/raw-material/RawMaterial";
 import ThirdPartyRM from "../../component/feature/third-party-raw-material/View/RawMaterial";
 import AddThirdPartyRM from "../../component/feature/third-party-raw-material/Create/AddRawMaterial";
+import Chamber from "../../component/feature/Services/Chamber/Chamber";
 
 const rootRoutes = [
   {
@@ -36,6 +37,10 @@ const rootRoutes = [
   {
     path: "dry-warehouse/add-item",
     element: <CreateService />,
+  },
+  {
+    path : "dry-warehouse/create-chamber",
+    element:<Chamber/>
   },
   {
     path: "dry-warehouse/update-warehouse/:id",
