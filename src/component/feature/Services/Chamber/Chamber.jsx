@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+// import { useFormik as formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -18,6 +19,11 @@ const Chamber = () => {
   const [newChamber, setNewChamber] = useState("");
   const [tag, setTag] = useState("frozen");
   const [capacity, setCapacity] = useState("");
+  // const [initialValues] = useState({
+  //   chamber_name: "",
+  //   capacity: "",
+
+  // });
 
   useEffect(() => {
     const loadChambers = async () => {
@@ -43,6 +49,8 @@ const Chamber = () => {
 
     loadChambers();
   }, [categories, dispatch]);
+
+  // const addChamberForm = formik({});
 
   const handleSubmit = async (e) => {
     e.preventDefault();
