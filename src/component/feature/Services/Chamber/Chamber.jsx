@@ -15,14 +15,38 @@ const Chamber = () => {
   const categories = useSelector((state) => state.ServiceDataSlice.chamber);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [newChamber, setNewChamber] = useState("");
-  const [tag, setTag] = useState("frozen");
-  const [capacity, setCapacity] = useState("");
+  // const [newChamber, setNewChamber] = useState("");
+  // const [tag, setTag] = useState("frozen");
+  // const [capacity, setCapacity] = useState("");
   // const [initialValues] = useState({
   //   chamber_name: "",
   //   capacity: "",
 
   // });
+
+  const addChamberForm = useFormValidator(
+    {
+      chamber_name: "",
+      capacity: "",
+      tag: "",
+    },
+    {
+      chamber_name: [
+        { type: "required", message: "Chamber name is required" },
+        {
+          type: "minLength",
+          length: 3,
+          message: "Minimum 3 characters needed",
+        },
+      ],
+      capacity: [
+        { type: "required", message: "Please mention the capacity of chamber" },
+        { type: "number", message: "Only numbers allowed" },
+      ],
+      tag: [{ type: "required", message: "Chamber type required" }],
+    },
+    { validateOnChange: true, debounce: 300 }
+  );
 
   useEffect(() => {
     const loadChambers = async () => {
@@ -49,29 +73,18 @@ const Chamber = () => {
     loadChambers();
   }, [categories, dispatch]);
 
-  // const addChamberForm = formik({});
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!newChamber.trim()) {
-      toast.error("Please enter a chamber name");
-      return;
-    }
+    const result = addChamberForm.validateForm();
 
     setIsLoading(true);
     try {
-      const response = await createChamber({
-        chamber_name: newChamber.trim(),
-        tag,
-        capacity: Number(capacity),
-      });
+      const response = await createChamber(result.data);
       if (response.status === 201) {
         dispatch({
           type: "ServiceDataSlice/handlePostCategory",
           payload: response.data,
         });
-        setNewChamber("");
-        setCapacity("");
         toast.success("Chamber added successfully");
       }
     } catch (error) {
@@ -111,85 +124,158 @@ const Chamber = () => {
         </div>
 
         <div className="card-body">
-          <div className="d-flex flex-column gap-3 mb-4">
-            <input
-              type="text"
-              value={newChamber}
-              onChange={(e) => setNewChamber(e.target.value)}
-              className="form-control"
-              placeholder="Enter Chamber Name"
-            />
-            <input
-              type="number"
-              value={capacity}
-              onChange={(e) => setCapacity(e.target.value)}
-              className="form-control"
-              placeholder="Enter Chamber Capacity"
-            />
-            <select
-              onChange={(e) => setTag(e.target.value)}
-              value={tag}
-              className="form-control"
-            >
-              <option value="frozen">Frozen</option>
-              <option value="dry">Dry</option>
-            </select>
+          <form
+            onSubmit={handleSubmit}
+            className="d-flex flex-column gap-3 mb-4"
+          >
+            <div className="form-floating">
+              <input
+                type="text"
+                name="chamber_name"
+                value={addChamberForm.values.chamber_name}
+                onChange={(e) =>
+                  addChamberForm.setField("chamber_name", e.target.value)
+                }
+                className={
+                  "form-control " +
+                  (addChamberForm.errors.chamber_name
+                    ? "is-invalid text-danger"
+                    : "")
+                }
+                placeholder="Enter Chamber Name"
+              />
+              <label htmlFor="">
+                Enter Chamber Name
+                {addChamberForm.errors.chamber_name && (
+                  <span className="text-danger fw-normal fs-error">
+                    &emsp;
+                    {addChamberForm.errors.chamber_name}
+                  </span>
+                )}
+              </label>
+            </div>
+            <div className="form-floating">
+              <input
+                type="text"
+                name="capacity"
+                value={addChamberForm.values.capacity}
+                onChange={(e) =>
+                  addChamberForm.setField("capacity", e.target.value)
+                }
+                className={
+                  "form-control " +
+                  (addChamberForm.errors.capacity
+                    ? "is-invalid text-danger"
+                    : "")
+                }
+                placeholder="Enter Chamber Capacity"
+              />
+              <label htmlFor="">
+                Enter Chamber Capacity
+                {addChamberForm.errors.capacity && (
+                  <span className="text-danger fw-normal fs-error">
+                    &emsp;
+                    {addChamberForm.errors.capacity}
+                  </span>
+                )}
+              </label>
+            </div>
+            <div className="form-floating">
+              <select
+                name="tag"
+                onChange={(e) => addChamberForm.setField("tag", e.target.value)}
+                value={addChamberForm.values.tag}
+                className={
+                  "form-select " +
+                  (addChamberForm.errors.tag ? "is-invalid text-danger" : "")
+                }
+                id="floatingSelect"
+                aria-label="Select Chamber Type"
+              >
+                <option selected value="">
+                  {addChamberForm.errors.tag && addChamberForm.errors.tag}
+                </option>
+                <option value="frozen">Frozen</option>
+                <option value="dry">Dry</option>
+              </select>
+              <label
+                className={addChamberForm.errors.tag && "text-danger"}
+                htmlFor="floatingSelect"
+              >
+                Select Chamber Type
+              </label>
+            </div>
+
             <button
-              type="button"
-              onClick={handleSubmit}
-              disabled={isLoading}
+              type="submit"
+              // onClick={handleSubmit}
+              disabled={!addChamberForm.isValid}
               className="btn btn-primary"
             >
               {isLoading ? <Spinner /> : "Add"}
             </button>
-          </div>
+          </form>
 
           <div className="categories-list">
             <h6 className="mb-3">Existing Chambers</h6>
             <div className="d-flex flex-wrap gap-2">
               {categories?.length === 0 ? (
                 <div className="d-flex flex-column flex-md-row gap-2 align-items-center mt-3 justify-content-center">
+                  <Spinner />
+                </div>
+              ) : categories?.length === 0 ? (
+                <div className="d-flex flex-column flex-md-row gap-2 align-items-center mt-3 justify-content-center">
+                  <p className="text-muted mb-0">No chamber found</p>
                   {/* <Spinner /> */}
                   <p className="text-muted mb-0">No chamber found</p>
                 </div>
-              ) : isLoading === true ? (
-                <div className="d-flex flex-column flex-md-row gap-2 align-items-center mt-3 justify-content-center">
-                  <Spinner />
-                  <p className="text-muted mb-0">No chamber found</p>
-                </div>
               ) : (
-                categories?.map((chamber) => (
-                  <div
-                    key={chamber.id || chamber.chamber_name}
-                    className={`badge ${
-                      chamber.tag === "frozen" ? "bg-info" : "bg-success"
-                    } d-flex align-items-center gap-2`}
-                    style={{
-                      fontSize: "0.9rem",
-                      padding: "8px 12px",
-                      cursor: "default",
-                    }}
-                  >
-                    {chamber.chamber_name}
-                    <button
-                      onClick={() => handleDelete(chamber.id)}
-                      className="btn btn-link text-white p-0 ms-2"
-                      type="button"
-                      style={{ fontSize: "1rem", lineHeight: 1 }}
+                <table className="table table-borderless table-hover">
+                  <tr className="table-disabled">
+                    <th className="text-center text-dark">Name</th>
+                    <th className="text-center text-dark">Capacity</th>
+                    <th className="text-center text-dark">No. of Items</th>
+                    <th className="text-center text-dark">Type</th>
+                    <th className="text-center text-dark">Delete</th>
+                  </tr>
+                  {categories?.map((chamber, id) => (
+                    <tr
+                      key={id}
+                      className={
+                        "text-dark " +
+                        (chamber.tag === "dry" ? "is-dry" : "is-frozen")
+                      }
                     >
-                      <i className="fas fa-times"></i>
-                    </button>
-                  </div>
-                ))
+                      <td className="text-center p-1 rounded-start rounded-end">
+                        {chamber.chamber_name}
+                      </td>
+                      <td className="text-center p-1 rounded-start rounded-end">
+                        {chamber?.items?.length == null
+                          ? "No item"
+                          : chamber?.items?.length}
+                      </td>
+                      <td className="text-center p-1 rounded-start rounded-end">
+                        {chamber.capacity}
+                      </td>
+                      <td className="text-center p-1 rounded-start rounded-end text-capitalize">
+                        {chamber.tag}
+                      </td>
+                      <td className="text-center p-1 rounded-start rounded-end">
+                        <button
+                          onClick={() => handleDelete(chamber.id)}
+                          className="btn btn-link text-dark p-1"
+                          type="button"
+                          style={{ fontSize: "1rem", lineHeight: 1 }}
+                        >
+                          <i className="fas fa-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </table>
               )}
             </div>
-
-            {/* {isLoading === true && (
-              <div className="d-flex flex-column flex-md-row gap-2 align-items-center mt-3 justify-content-center">
-                <Spinner />
-                <p className="text-muted mb-0">No chamber found</p>
-              </div>
-            )} */}
+            {console.log(categories)}
           </div>
         </div>
       </div>

@@ -101,6 +101,15 @@
 .w-100 {
     width: 100% !important;
 }
+.is-dry{
+    background-color: rgb(210.8, 243.4, 222.8);
+}
+.is-frozen{
+    background-color: rgb(206.8, 237, 250.6);;
+}
+.fs-error{
+    font-size: 20px;
+}
 
 .projects-banners {
     display: flex;

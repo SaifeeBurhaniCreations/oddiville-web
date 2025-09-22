@@ -34,6 +34,8 @@ const Services = () => {
         dispatch(handleFetchData(warehouseRes.data));
 
         const chamberRes = await fetchChamber();
+        console.log(serviceData);
+        
         if (chamberRes.status === 200) {
           dispatch({
             type: "ServiceDataSlice/handleFetchCategory",
@@ -104,8 +106,8 @@ const Services = () => {
   );
 
   const renderTableRows = () => {
-    return filteredData.map((service) => (
-      <tr key={service._id}>
+    return filteredData.map((service, ind) => (
+      <tr key={ind}>
         <td>
           <img
             src={service?.banner?.s3Url || "/assets/img/png/fallback_img.png"}
