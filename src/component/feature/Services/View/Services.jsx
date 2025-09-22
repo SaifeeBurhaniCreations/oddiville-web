@@ -48,7 +48,7 @@ const Services = () => {
       }
     };
 
-    serviceData?.length === 0 ? fetchAll() :  setIsLoading(false); 
+    serviceData?.length === 0 ? fetchAll() : setIsLoading(false);
   }, [dispatch]);
 
   useEffect(() => {
@@ -118,10 +118,14 @@ const Services = () => {
           <p className="text-xs text-secondary mb-0">{service.description}</p>
         </td>
         <td className="text-center">
-          <span className="text-secondary text-xs font-weight-bold">{service?.chamber_id || "N/A"}</span>
+          <span className="text-secondary text-xs font-weight-bold">
+            {service?.chamber_id || "N/A"}
+          </span>
         </td>
         <td className="text-center">
-          <span className="text-secondary text-xs font-weight-bold">{formatDate(service?.warehoused_date)}</span>
+          <span className="text-secondary text-xs font-weight-bold">
+            {formatDate(service?.warehoused_date)}
+          </span>
         </td>
         <td>
           <div className="d-flex">
@@ -150,35 +154,43 @@ const Services = () => {
           <div className="card mb-4">
             <div className="card-header pb-0 d-flex justify-content-between align-items-center">
               <h5>Dry Chamber Item List</h5>
-              <NavLink to="/dry-warehouse/add-item" className="btn bg-gradient-info">
+              <NavLink
+                to="/dry-warehouse/add-item"
+                className="btn bg-gradient-info"
+              >
                 <i className="fa-solid fa-plus" /> &nbsp; Add Item
               </NavLink>
             </div>
             <div className="card-body">
               <div className="d-flex flex-wrap gap-2 mb-3">
-                <button className="btn btn-success btn-sm" onClick={() => handleFilter("All")}>
+                <button
+                  className="btn btn-success btn-sm"
+                  onClick={() => handleFilter("All")}
+                >
                   All
                 </button>
-                {chambers?.filter(ch => ch.tag === "dry").map((chamber, idx) => (
-                  <button
-                    key={idx}
-                    className="btn btn-success btn-sm"
-                    onClick={() => handleFilter(chamber.chamber_name)}
-                  >
-                    {chamber.chamber_name}
-                  </button>
-                ))}
+                {chambers
+                  ?.filter((ch) => ch.tag === "dry")
+                  .map((chamber, idx) => (
+                    <button
+                      key={idx}
+                      className="btn btn-success btn-sm"
+                      onClick={() => handleFilter(chamber.chamber_name)}
+                    >
+                      {chamber.chamber_name}
+                    </button>
+                  ))}
               </div>
 
               <div className="table-responsive p-0">
                 {isLoading ? (
-                    <TableWrapper>
-                      <tr>
+                  <TableWrapper>
+                    <tr>
                       <td>
                         <div className="d-flex px-2 py-1">
                           <div>
                             <img
-                              src={'./assets/img/png/fallback_img.png'}
+                              src={"./assets/img/png/fallback_img.png"}
                               className="avatar avatar-lg"
                               alt="banner"
                             />
@@ -186,7 +198,7 @@ const Services = () => {
                         </div>
                       </td>
                       <td>
-                      <Spinner />
+                        <Spinner />
                       </td>
                       <td className="align-middle text-center">
                         <span className="text-secondary text-xs font-weight-bold">
@@ -216,13 +228,16 @@ const Services = () => {
                         </div>
                       </td>
                     </tr>
-                    </TableWrapper>
-                  
+                  </TableWrapper>
                 ) : filteredData.length > 0 ? (
                   <TableWrapper>{renderTableRows()}</TableWrapper>
                 ) : (
                   <TableWrapper>
-                    <tr><td colSpan={5} className="text-center">No data available</td></tr>
+                    <tr>
+                      <td colSpan={5} className="text-center">
+                        No data available
+                      </td>
+                    </tr>
                   </TableWrapper>
                 )}
               </div>
@@ -233,7 +248,10 @@ const Services = () => {
 
       {/* Modal */}
       {showModal && (
-        <div className="modal fade show d-block" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
+        <div
+          className="modal fade show d-block"
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+        >
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-header">
@@ -245,10 +263,14 @@ const Services = () => {
                 ></button>
               </div>
               <div className="modal-body">
-                Are you sure you want to delete service "{selectedService?.item_name}"?
+                Are you sure you want to delete service "
+                {selectedService?.item_name}"?
               </div>
               <div className="modal-footer">
-                <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setShowModal(false)}
+                >
                   Cancel
                 </button>
                 <button className="btn btn-danger" onClick={handleDelete}>
