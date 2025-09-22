@@ -1,4 +1,3 @@
-import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { createRawMaterial, modifyRawMaterial } from '../../../services/RawMaterialService'
 import Spinner from '../../shared/Spinner/Spinner'
@@ -7,6 +6,8 @@ import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux'
 import { handleModifyData, handlePostData } from '../../../redux/RawMaterialDataSlice'
 import Banners from './Banners'
+import { useFormValidator } from '../../../../custom_library/formValidator/useFormValidator'
+import FormField from '../../../../custom_library/formValidator/components/FormField'
 
 const AddWorkLocation = () => {
 
@@ -27,14 +28,29 @@ const AddWorkLocation = () => {
     sample_image: null
   })  
 
-  const form = useFormik({
-    initialValues,
-    onSubmit: async (formData) => {
-      
+  const {
+    values,
+    validateForm,
+    errors,
+    setField
+  } = useFormValidator(
+    { name: '', sample_image: null },
+    {
+      name: [
+        {type: 'required', message: 'Name is required'}
+      ],
+      sample_image: []
+    },
+    {validateOnChange: true, debounce: 300}
+  )
+
+  const handleSubmit = async() => {
+    const result = validateForm()
+    if (result.success) {
       const formPayload = new FormData();
 
       // Add basic fields
-      formPayload.append("name", formData.name);
+      formPayload.append("name", result.data.name);
 
 
       // Add sample_image_url if exists
@@ -85,7 +101,8 @@ const AddWorkLocation = () => {
         setIsLoading(false);
       }
     }
-  });
+    
+  }
 
   useEffect(() => {
     if (id) {
@@ -108,7 +125,7 @@ const AddWorkLocation = () => {
 
   return (
     <>
-        <form onSubmit={form.handleSubmit}>
+        {/* <form> */}
           <div className="card">
             <div className="card-header flex-cs gap-2 justify-content-between pt-4 pb-2">
               <h6>Manage Raw Materials</h6>
@@ -120,15 +137,26 @@ const AddWorkLocation = () => {
               <Banners name='Uplaod Image' getBanners={fetchedBanners} deleteBanners={deleteBanners} setDeleteBanners={setDeleteBanners} fetchBanners={fetchBanners} />
               <div className="grid-cs gtc-1">
                 <div>
-                  <input type="text" value={form?.values?.name} onChange={form.handleChange} className="form-control" name="name" placeholder="Item Name" id="" />
+                  <FormField name='name' form={{ values, setField, errors }}>
+                    {
+                      ({value, error, onChange})=>(
+                        <>
+                          <input type="text" value={value} onChange={(e)=>onChange(e.target.value)} className={`form-control ${error && 'is-invalid'}`} name="name" placeholder="Item Name" id="" />
+                          {
+                            error && <small className='text-sm text-danger'>{error}</small>
+                          }
+                        </>
+                      )
+                    }
+                  </FormField>
                 </div>
               </div>
             </div>
             <div className="card-footer">
-            <button type='submit' disabled={isLoading} className='btn btn-primary btn-md m-0'>Save Item {isLoading && <Spinner />}</button>
+            <button type='button' onClick={handleSubmit} disabled={isLoading} className='btn btn-primary btn-md m-0'>Save Item {isLoading && <Spinner />}</button>
             </div>
           </div>
-        </form>
+        {/* </form> */}
     </>
   )
 }
