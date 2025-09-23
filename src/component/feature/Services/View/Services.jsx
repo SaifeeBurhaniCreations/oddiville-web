@@ -31,6 +31,8 @@ const Services = () => {
     const fetchAll = async () => {
       try {
         const warehouseRes = await fetchDryWarehouse();
+        console.log(warehouseRes.data);
+        
         dispatch(handleFetchData(warehouseRes.data));
 
         const chamberRes = await fetchChamber();
