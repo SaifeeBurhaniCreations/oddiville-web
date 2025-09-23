@@ -19,7 +19,6 @@ const AddWorkLocation = () => {
   const workLocation = useSelector((state) => state.location.data);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [banners, setBanners] = useState(null);
   const [fetchedBanners, setFetchedBanners] = useState(null);
   const [deleteBanners, setDeleteBanners] = useState(null);
 
@@ -37,13 +36,7 @@ const AddWorkLocation = () => {
         { type: "required", message: "Description is required" },
         { type: "minLength", length: 5, message: "Minimum 5 characters" },
       ],
-      sample_image: [
-        {
-          type: "required",
-          message: "Image is required",
-          // condition: () => !id,
-        },
-      ],
+      sample_image: [{ type: "required", message: "Image is required" }],
     },
     { validateOnChange: true, debounce: 300 }
   );
@@ -59,15 +52,11 @@ const AddWorkLocation = () => {
     }
   }, [id, workLocation]);
 
-  const fetchBanners = (data) => {
-    setBanners(data);
-  };
-
   const handleExit = () => {
     setFetchedBanners(null);
     form.setField("location_name", "");
     form.setField("description", "");
-    setBanners(null);
+    form.setField("sample_image", null);
     navigate("/work-location");
   };
 
@@ -78,13 +67,15 @@ const AddWorkLocation = () => {
     if (!result.success) return;
 
     const formPayload = new FormData();
+    
     formPayload.append("location_name", form.values.location_name);
     formPayload.append("description", form.values.description);
-
-    if (banners) {
-      formPayload.append("sample_image", banners);
+    
+    if (form.values.sample_image) {
+      formPayload.append("sample_image", form.values.sample_image);
     }
-
+    
+    console.log(formPayload);
     setIsLoading(true);
     try {
       if (!id) {
@@ -132,14 +123,12 @@ const AddWorkLocation = () => {
           <Banners
             name="Upload Location"
             getBanners={fetchedBanners}
-            fetchBanners={fetchBanners}
             deleteBanners={deleteBanners}
             setDeleteBanners={setDeleteBanners}
+            form={form}
             setFieldValue={form.setField}
-            
-            formTouchedSetter={form.setTouched}
           />
-
+          {console.log(form.values)}
           <div className="grid-cs gtc-1">
             <div>
               <input
@@ -172,7 +161,7 @@ const AddWorkLocation = () => {
         <div className="card-footer">
           <button
             type="submit"
-            disabled={!form.isValid || isLoading}
+            // disabled={!form.isValid || isLoading}
             className="btn btn-primary btn-md m-0"
           >
             {id ? "Update" : "Save"} Location {isLoading && <Spinner />}
