@@ -515,3 +515,9 @@
         display: none !important;
     }
 }
+
+.illustration {
+    object-fit: contain;
+    width: 100%;
+    height: 100px;
+}

@@ -84,7 +84,7 @@ const Banners = ({
       />
       <label htmlFor="">
         {name}
-        {form.errors.sample_image && (
+        {form?.errors.sample_image && (
           <span className="text-danger fw-normal fs-error">
             &emsp;{form.errors.sample_image}
           </span>
