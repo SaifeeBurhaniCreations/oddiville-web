@@ -79,17 +79,19 @@ const Lane = () => {
   );
 
   const renderTableRows = () => {
+    
+    
     return filteredData.map((lane) => (
-      <tr key={lane._id}>
+      <tr key={lane.id || lane.data.id}>
         <td>
-          <p className="text-xl font-weight-bold mb-0">{lane.name}</p>
-          <p className="text-xs text-secondary mb-0">{lane.description}</p>
+          <p className="text-xl font-weight-bold mb-0">{lane.name || lane.data.name}</p>
+          <p className="text-xs text-secondary mb-0">{lane.description||lane.data.description}</p>
         </td>
         <td className="text-center">
-          <span className="text-secondary text-xs font-weight-bold" >{formatDate(lane.updatedAt)}</span>
+          <span className="text-secondary text-xs font-weight-bold" >{formatDate(lane.updatedAt||lane.data.updatedAt)}</span>
         </td>
         <td className="text-center">
-          <span className="text-secondary text-xs font-weight-bold">{formatDate(lane.createdAt)}</span>
+          <span className="text-secondary text-xs font-weight-bold">{formatDate(lane.createdAt || lane.data.createdAt)}</span>
         </td>
         <td>
           <div className="d-flex">
@@ -101,7 +103,7 @@ const Lane = () => {
             </NavLink>
             <button
               className="btn btn-link text-danger text-gradient px-3 mb-0"
-              onClick={() => handleDeleteClick(lane)}
+              onClick={() => handleDeleteClick(lane || lane.data )}
             >
               <i className="far fa-trash-alt me-2"></i> Delete
             </button>
