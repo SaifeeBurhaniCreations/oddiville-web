@@ -104,6 +104,15 @@ const Banners = ({
         }}
         style={{ visibility: "hidden" }}
       />
+      <label htmlFor="">
+        {name}
+        {form?.errors.sample_image && (
+          <span className="text-danger fw-normal fs-error">
+            &emsp;{form.errors.sample_image}
+          </span>
+        )}
+      </label>
+
       <div className="projects-banners">
         {getBanners ? (
           <>

@@ -73,7 +73,7 @@ const Sidebar = ({ open, onClose }) => {
           </li>
           <li className="nav-item mt-3">
             <h6 className="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">
-              Dry Chambers
+              Dry Warehouse
             </h6>
           </li>
           <li className="nav-item">
@@ -111,8 +111,15 @@ const Sidebar = ({ open, onClose }) => {
             </NavLink>
           </li>
 
+          
+
+          <li className="nav-item mt-3">
+            <h6 className="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">
+              Frozen Chamber
+            </h6>
+          </li>
           <li className="nav-item">
-            <NavLink className="nav-link" to="dry-warehouse/create-chamber">
+            <NavLink className="nav-link" to="frozen-warehouse/create-chamber">
               <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                 {/* <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -157,7 +164,7 @@ const Sidebar = ({ open, onClose }) => {
 
           <li className="nav-item mt-3">
             <h6 className="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">
-              Work Location
+              Labour Location
             </h6>
           </li>
           <li className="nav-item">
@@ -185,7 +192,7 @@ const Sidebar = ({ open, onClose }) => {
 
           <li className="nav-item mt-3">
             <h6 className="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">
-              Machine Lanes
+              Production Lines
             </h6>
           </li>
           <li className="nav-item">
@@ -245,7 +252,7 @@ const Sidebar = ({ open, onClose }) => {
 
           <li className="nav-item mt-3">
             <h6 className="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">
-              Third Party Products
+              Third Party Booking
             </h6>
           </li>
           <li className="nav-item">

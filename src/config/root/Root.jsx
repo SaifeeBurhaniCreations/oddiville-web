@@ -39,7 +39,7 @@ const rootRoutes = [
     element: <CreateService />,
   },
   {
-    path : "dry-warehouse/create-chamber",
+    path : "frozen-warehouse/create-chamber",
     element:<Chamber/>
   },
   {

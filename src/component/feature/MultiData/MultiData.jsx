@@ -16,7 +16,7 @@ const MultiData = () => {
                     <div className="col-md-4">
                         <div onClick={()=>navigate('/dry-warehouse')} className="card cursor-pointer">
                             <div className="card-header justify-content-center flex-cs pt-4 pb-2">
-                                <h5>Manage Dry Chamber</h5>
+                                <h5>Manage Dry Warehouse</h5>
                             </div>
                             <div className="card-body flex-cs pt-2">
                                 <img src="./assets/img/svg/warehouse.svg" alt="" />
@@ -24,9 +24,19 @@ const MultiData = () => {
                         </div>
                     </div>
                     <div className="col-md-4">
+                        <div onClick={()=>navigate('/dry-warehouse')} className="card cursor-pointer">
+                            <div className="card-header justify-content-center flex-cs pt-4 pb-2">
+                                <h5>Manage Frozen Chamber</h5>
+                            </div>
+                            <div className="card-body flex-cs pt-2">
+                                <img src="./assets/img/illustrations/frozen-chamber.png" className='illustration' alt="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-4">
                         <div onClick={()=>navigate('/lane')} className="card cursor-pointer">
                             <div className="card-header justify-content-center flex-cs pt-4 pb-2">
-                                <h5>Manage Machines</h5>
+                                <h5>Manage Production Lines</h5>
                             </div>
                             <div className="card-body flex-cs pt-2">
                                 <img src="./assets/img/svg/machine.svg" alt="" />
@@ -36,10 +46,10 @@ const MultiData = () => {
                     <div className="col-md-4">
                         <div onClick={()=>navigate('/work-location')} className="card cursor-pointer">
                             <div className="card-header justify-content-center flex-cs pt-4 pb-2">
-                                <h5>Manage Locations</h5>
+                                <h5>Manage Labour Locations</h5>
                             </div>
                             <div className="card-body flex-cs pt-2">
-                                <img src="./assets/img/svg/location.svg" alt="" />
+                            <img src="./assets/img/illustrations/labour-location.png" className='illustration' alt="" />
                             </div>
                         </div>
                     </div>
