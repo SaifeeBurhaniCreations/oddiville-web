@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
-import { create, modify } from "../../../../services/WorkLocatonService";
+import { create, modify } from "../../../../services/WorkLocationService";
 import Spinner from "../../../shared/Spinner/Spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";

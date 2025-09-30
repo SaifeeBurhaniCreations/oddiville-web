@@ -57,7 +57,7 @@
   }
   // Expanded navbar specific styles
   &.navbar-expand {
-    @each $breakpoint, $dimension in $grid-breakpoints {
+    @each $breakpoint, $dimension in $grid- {
       &-#{$breakpoint} {
         @include media-breakpoint-up(#{$breakpoint}) {
           display: block;

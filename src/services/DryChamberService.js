@@ -8,6 +8,7 @@ const create = async (formData) => {
 };
 
 const fetchDryWarehouse = async () => {
+  console.log("fetch")
   const response = await api.get(`/chamber/type/dry`);
   return response;
 };

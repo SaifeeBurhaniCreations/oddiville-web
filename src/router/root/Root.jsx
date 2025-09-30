@@ -4,7 +4,7 @@ import Services from "../../component/feature/Services/View/Services";
 import CreateService from "../../component/feature/Services/Create/CreateService";
 import WorkLocation from "../../component/feature/work-location/View/WorkLocation";
 import Lane from "../../component/feature/Lane/View/Lane";
-import RawMaterial from "../../component/feature/raw-material/RawMaterial";
+import RawMaterial from "../../component/feature/RawMaterial/RawMaterial";
 import ThirdPartyRM from "../../component/feature/third-party-raw-material/View/RawMaterial";
 import AddThirdPartyRM from "../../component/feature/third-party-raw-material/Create/AddRawMaterial";
 import Chamber from "../../component/feature/Services/Chamber/Chamber";

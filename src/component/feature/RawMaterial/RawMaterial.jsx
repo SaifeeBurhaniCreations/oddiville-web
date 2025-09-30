@@ -3,47 +3,26 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-import { formatDate } from "../../../../util/formateDate";
-import {
-  fetchChamber,
-  fetchDryWarehouse,
-  remove as removeService,
-} from "../../../../services/DryChamberService";
-import {
-  handleFetchData,
-  handleRemoveData,
-} from "../../../../redux/ServiceDataSlice";
+import { formatDate } from "../../../util/formatDate";
+import { fetchRawMaterial, removeRawMaterial } from "../../../services/RawMaterialService";
+import { handleFetchData, handleRemoveData } from "../../../redux/RawMaterialDataSlice";
+import Spinner from "../../shared/Spinner/Spinner";
+import AddRawMaterial from "./AddRawMaterial";
 
-import Spinner from "../../../shared/Spinner/Spinner";
-
-const Services = () => {
+const RawMaterial = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-
-  const serviceData = useSelector((state) => state.ServiceDataSlice.data);
-  const chambers = useSelector((state) => state.ServiceDataSlice.chamber);
-
+  const rmData = useSelector((state) => state.rm.data);
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
     const fetchAll = async () => {
+      setIsLoading(true);
       try {
-        const warehouseRes = await fetchDryWarehouse();
-        console.log(warehouseRes.data);
-        
-        dispatch(handleFetchData(warehouseRes.data));
-
-        const chamberRes = await fetchChamber();
-        console.log(serviceData);
-        
-        if (chamberRes.status === 200) {
-          dispatch({
-            type: "ServiceDataSlice/handleFetchCategory",
-            payload: chamberRes.data,
-          });
-        }
+        const response = await fetchRawMaterial();
+        dispatch(handleFetchData(response.data));
       } catch (error) {
         toast.error("Failed to fetch data");
         console.error(error);
@@ -52,20 +31,12 @@ const Services = () => {
       }
     };
 
-    serviceData?.length === 0 ? fetchAll() : setIsLoading(false);
+    rmData?.length === 0 ? fetchAll() : setIsLoading(false);
   }, [dispatch]);
 
   useEffect(() => {
-    setFilteredData(serviceData);
-  }, [serviceData]);
-
-  const handleFilter = (chamberName) => {
-    setFilteredData(
-      chamberName === "All"
-        ? serviceData
-        : serviceData.filter((item) => item?.chamber_id === chamberName)
-    );
-  };
+    setFilteredData(rmData);
+  }, [rmData]);
 
   const handleDeleteClick = (service) => {
     setSelectedService(service);
@@ -76,17 +47,17 @@ const Services = () => {
     if (!selectedService?.id) return;
     setIsLoading(true);
     try {
-      const response = await removeService(selectedService.id);
+      const response = await removeRawMaterial(selectedService.id);
       if (response.status === 200) {
         dispatch(handleRemoveData(selectedService.id));
         toast.success("Item deleted successfully!");
         setShowModal(false);
       } else {
-        toast.error("Failed to delete service");
+        toast.error("Failed to delete item");
       }
     } catch (error) {
-      console.error("Error deleting service:", error);
-      toast.error("Error deleting service");
+      console.error("Error deleting item:", error);
+      toast.error("Failed to delete item");
     } finally {
       setIsLoading(false);
     }
@@ -98,7 +69,6 @@ const Services = () => {
         <tr>
           <th>Image</th>
           <th>Item Name</th>
-          <th className="text-center">Chamber</th>
           <th className="text-center">Created Date</th>
           <th>Actions</th>
         </tr>
@@ -107,85 +77,73 @@ const Services = () => {
     </table>
   );
 
-  const renderTableRows = () => {
-    return filteredData.map((service, ind) => (
-      <tr key={ind}>
+  const renderRows = () => (
+    filteredData.map((item) => (
+      <tr key={item._id}>
         <td>
-          <img
-            src={service?.banner?.s3Url || "/assets/img/png/fallback_img.png"}
-            className="avatar avatar-lg"
-            alt="banner"
-          />
+          <div className="d-flex px-2 py-1">
+          <div
+  style={{
+    backgroundColor: "#9BC698",
+    borderRadius: 8,
+    padding: 4,
+    width: 64, // Set your desired width
+    height: 64, // Set your desired height
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  }}
+>
+  <img
+    src={item?.sample_image?.url || './assets/img/png/fallback_img.png'}
+    alt="sample"
+    style={{
+      width: "100%",
+      height: "100%",
+      objectFit: "contain",
+      borderRadius: 8,
+    }}
+  />
+</div>
+          </div>
         </td>
         <td>
-          <p className="text-xl font-weight-bold mb-0">{service.item_name}</p>
-          <p className="text-xs text-secondary mb-0">{service.description}</p>
+          <p className="text-xl font-weight-bold mb-0">{item.name}</p>
         </td>
         <td className="text-center">
           <span className="text-secondary text-xs font-weight-bold">
-            {service?.chamber_id || "N/A"}
-          </span>
-        </td>
-        <td className="text-center">
-          <span className="text-secondary text-xs font-weight-bold">
-            {formatDate(service?.warehoused_date)}
+            {formatDate(item?.createdAt)}
           </span>
         </td>
         <td>
           <div className="d-flex">
             <NavLink
-              to={`/dry-warehouse/update-warehouse/${service?.id}`}
+              to={`/raw-material/${item.id}`}
               className="btn m-0 btn-link text-secondary font-weight-bold text-xs"
             >
               Edit
             </NavLink>
             <button
               className="btn btn-link text-danger text-gradient px-3 mb-0"
-              onClick={() => handleDeleteClick(service)}
+              onClick={() => handleDeleteClick(item)}
             >
-              <i className="far fa-trash-alt me-2" /> Delete
+              <i className="far fa-trash-alt me-2"></i> Delete
             </button>
           </div>
         </td>
       </tr>
-    ));
-  };
+    ))
+  );
 
   return (
     <div className="container-fluid">
-      <div className="row">
-        <div className="col-md-12">
+      <div className="row reverse">
+        <div className="col-md-8">
           <div className="card mb-4">
-            <div className="card-header pb-0 d-flex justify-content-between align-items-center">
-              <h5>Dry Chamber Item List</h5>
-              <NavLink
-                to="/dry-warehouse/add-item"
-                className="btn bg-gradient-info"
-              >
-                <i className="fa-solid fa-plus" /> &nbsp; Add Item
-              </NavLink>
+            <div className="card-header pb-0">
+              <h5>Raw Material Item List</h5>
             </div>
             <div className="card-body">
-              <div className="d-flex flex-wrap gap-2 mb-3">
-                <button
-                  className="btn btn-success btn-sm"
-                  onClick={() => handleFilter("All")}
-                >
-                  All
-                </button>
-                {chambers
-                  ?.filter((ch) => ch.tag === "dry")
-                  .map((chamber, idx) => (
-                    <button
-                      key={idx}
-                      className="btn btn-success btn-sm"
-                      onClick={() => handleFilter(chamber.chamber_name)}
-                    >
-                      {chamber.chamber_name}
-                    </button>
-                  ))}
-              </div>
-
               <div className="table-responsive p-0">
                 {isLoading ? (
                   <TableWrapper>
@@ -194,7 +152,7 @@ const Services = () => {
                         <div className="d-flex px-2 py-1">
                           <div>
                             <img
-                              src={"./assets/img/png/fallback_img.png"}
+                              src={'./assets/img/png/fallback_img.png'}
                               className="avatar avatar-lg"
                               alt="banner"
                             />
@@ -234,23 +192,23 @@ const Services = () => {
                     </tr>
                   </TableWrapper>
                 ) : filteredData.length > 0 ? (
-                  <TableWrapper>{renderTableRows()}</TableWrapper>
+                  <TableWrapper>{renderRows()}</TableWrapper>
                 ) : (
                   <TableWrapper>
-                    <tr>
-                      <td colSpan={5} className="text-center">
-                        No data available
-                      </td>
-                    </tr>
+                    <tr><td colSpan={4} className="text-center">No data found</td></tr>
                   </TableWrapper>
                 )}
               </div>
             </div>
           </div>
         </div>
+
+        <div className="col-md-4">
+          <AddRawMaterial />
+        </div>
       </div>
 
-      {/* Modal */}
+      {/* Delete Confirmation Modal */}
       {showModal && (
         <div
           className="modal fade show d-block"
@@ -267,17 +225,21 @@ const Services = () => {
                 ></button>
               </div>
               <div className="modal-body">
-                Are you sure you want to delete service "
-                {selectedService?.item_name}"?
+                Are you sure you want to delete "{selectedService?.name}"?
               </div>
               <div className="modal-footer">
                 <button
+                  type="button"
                   className="btn btn-secondary"
                   onClick={() => setShowModal(false)}
                 >
                   Cancel
                 </button>
-                <button className="btn btn-danger" onClick={handleDelete}>
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick={handleDelete}
+                >
                   Delete {isLoading && <Spinner />}
                 </button>
               </div>
@@ -289,4 +251,4 @@ const Services = () => {
   );
 };
 
-export default Services;
+export default RawMaterial;

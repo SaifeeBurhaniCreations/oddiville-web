@@ -26,6 +26,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+      let message = "Something went wrong. Please try again.";
     if (error.response?.status === 401) {
       console.warn("Token expired or unauthorized!");
     }

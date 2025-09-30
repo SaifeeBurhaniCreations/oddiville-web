@@ -3,14 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-import { formatDate } from "../../../../util/formateDate";
+import { formatDate } from "../../../../util/formatDate";
 
 import {
   handleFetchData,
   handleRemoveData,
 } from "../../../../redux/OtherProductSlice";
 import Spinner from "../../../shared/Spinner/Spinner";
-import { fetchAllOrders } from "../../../../services/ThridPartyProductService";
+import { fetchAllOrders } from "../../../../services/ThirdPartyProductService";
 
 const RawMaterial = () => {
   const [showModal, setShowModal] = useState(false);

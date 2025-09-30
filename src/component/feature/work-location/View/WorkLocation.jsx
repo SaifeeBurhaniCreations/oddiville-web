@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-import { formatDate } from "../../../../util/formateDate";
+import { formatDate } from "../../../../util/formatDate";
 import {
   fetchLocations,
   remove as removeLocation,
-} from "../../../../services/WorkLocatonService";
+} from "../../../../services/WorkLocationService";
 import {
   handleFetchData,
   handleRemoveData,

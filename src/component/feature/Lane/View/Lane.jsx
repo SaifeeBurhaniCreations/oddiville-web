@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-import { formatDate } from "../../../../util/formateDate";
+import { formatDate } from "../../../../util/formatDate";
 import { fetchLanes, remove as removeLane } from "../../../../services/LaneService";
 import { handleFetchData, handleRemoveData } from "../../../../redux/LaneDataSlice";
 import Spinner from "../../../shared/Spinner/Spinner";

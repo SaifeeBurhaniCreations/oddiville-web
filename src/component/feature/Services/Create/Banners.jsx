@@ -8,6 +8,8 @@ const Banners = ({
   getBanners,
   deleteBanners,
   setDeleteBanners,
+  form,
+  
 }) => {
   const bannerRef = useRef();
   const [banner, setBanner] = useState({

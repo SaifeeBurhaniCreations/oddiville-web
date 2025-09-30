@@ -34,7 +34,7 @@
 }
 
 .main-layout {
-    display: grid;
+    display: flex;
     grid-template-columns: 1fr 5fr;
 }
 
@@ -46,6 +46,7 @@
     margin-left: 0 !important;
     max-width: 100%;
     overflow-x: clip;
+    
 }
 
 .navbar-vertical.navbar-expand-xs.fixed-start {
@@ -461,7 +462,9 @@
 /* Desktop layout */
 @media (min-width: 992px) {
     .main-layout {
-        grid-template-columns: 1fr 5fr !important;
+        display: grid;
+        min-height: 100vh;
+        grid-template-columns: 250px 1fr  !important;
         transition: grid-template-columns 0.3s !important;
     }
 

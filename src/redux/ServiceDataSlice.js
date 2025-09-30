@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import axios from 'axios'
+
 
 const initialState = {
     data : [],
@@ -15,6 +15,8 @@ const ServiceDataSlice = createSlice({
             
         },
         handleFetchData: (state, action) => {
+            console.log(handleFetchData);
+            
             state.data = action.payload
         },
         handlePostData: (state, action) => {

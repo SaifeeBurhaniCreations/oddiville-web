@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
-import { create, modify } from '../../../../services/ThridPartyProductService';
+import { create, modify } from '../../../../services/ThirdPartyProductService';
 import { fetchChamber } from '../../../../services/DryChamberService';
 import Spinner from '../../../shared/Spinner/Spinner';
 import { useNavigate, useParams } from 'react-router-dom';
