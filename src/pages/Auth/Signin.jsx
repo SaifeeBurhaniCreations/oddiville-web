@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {useFormValidator} from "../../../custom_library/formValidator/useFormValidator"
-import { LoginService } from "../../services/AuthService";
-import Spinner from "../../component/shared/Spinner/Spinner";
+import { LoginService } from "@/services/AuthService";
+import Spinner from "@/components/Spinner/Spinner";
 
 const Signin = () => {
   const navigate = useNavigate();

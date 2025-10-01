@@ -1,13 +1,24 @@
-import Home from "../../component/feature/Home/Home";
-import Logout from "../../component/shared/Auth/Logout";
-import Services from "../../component/feature/Services/View/Services";
-import CreateService from "../../component/feature/Services/Create/CreateService";
-import WorkLocation from "../../component/feature/work-location/View/WorkLocation";
-import Lane from "../../component/feature/Lane/View/Lane";
-import RawMaterial from "../../component/feature/RawMaterial/RawMaterial";
-import ThirdPartyRM from "../../component/feature/third-party-raw-material/View/RawMaterial";
-import AddThirdPartyRM from "../../component/feature/third-party-raw-material/Create/AddRawMaterial";
-import Chamber from "../../component/feature/Services/Chamber/Chamber";
+// import Home from "../../component/feature/Home/Home";
+// import Logout from "../../component/shared/Auth/Logout";
+// import Services from "../../component/feature/Services/View/Services";
+// import CreateService from "../../component/feature/Services/Create/CreateService";
+// import WorkLocation from "../../component/feature/work-location/View/WorkLocation";
+// import Lane from "../../component/feature/Lane/View/Lane";
+// import RawMaterial from "../../component/feature/RawMaterial/RawMaterial";
+// import ThirdPartyRM from "../../component/feature/third-party-raw-material/View/RawMaterial";
+// import AddThirdPartyRM from "../../component/feature/third-party-raw-material/Create/AddRawMaterial";
+// import Chamber from "../../component/feature/Services/Chamber/Chamber";
+import Home from '@/pages/Home/Home';
+import Logout from '@/pages/Auth/Logout';
+import Services from '@/pages/Services/Services';
+import CreateService from '@/pages/Services/CreateService';
+import WorkLocation from '@/feature/work-location/View/WorkLocation';
+import Lane from '@/feature/Lane/View/Lane';
+import RawMaterial from '@/feature/RawMaterial/RawMaterial';
+import ThirdPartyRM from '@/feature/third-party-raw-material/View/RawMaterial';
+import AddThirdPartyRM from '@/feature/third-party-raw-material/Create/AddRawMaterial';
+import Chamber from '@/pages/Chamber/Chamber';
+
 
 const rootRoutes = [
   {

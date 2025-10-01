@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { useFormValidator } from "../../../custom_library/formValidator/useFormValidator";
+import { useFormValidator } from "custom_library/formValidator/useFormValidator";
 import { useDispatch, useSelector } from "react-redux";
 import {
   create,
   modify,
   fetchDryWarehouse,
-} from "../../services/DryChamberService";
-import Spinner from "../../component/shared/Spinner/Spinner";
+} from "@/services/DryChamberService";
+import Spinner from "@/components/Spinner/Spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import Banners from "../../component/shared/Banners/Banners";
+import Banners from "@/components/Banners/Banners";
 import {
   handleModifyData,
   handlePostData,
   handleFetchCategory,
-} from "../../redux/ServiceDataSlice";
+} from "@/redux/ServiceDataSlice";
 
 const CreateService = () => {
   const navigate = useNavigate();

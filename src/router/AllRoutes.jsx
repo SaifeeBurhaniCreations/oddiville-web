@@ -1,7 +1,7 @@
 import { Navigate, useRoutes } from "react-router-dom";
 import rootRoutes from "./root/Root";
 import RootModule from "../modules/RootModule";
-import Signin from "../component/shared/Auth/Signin";
+import Signin from "@/pages/Auth/Signin";
 
 const AllRoutes = () => {
   const isTokenPresent = !!localStorage.getItem("metadata"); 

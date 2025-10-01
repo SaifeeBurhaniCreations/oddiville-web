@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useFormValidator } from "../../../custom_library/formValidator/useFormValidator";
+import { useFormValidator } from "custom_library/formValidator/useFormValidator";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createChamber,
   removeChamber,
   fetchChamber,
-} from "../../services/DryChamberService";
+} from "@/services/DryChamberService";
 import { toast } from "react-toastify";
-import Spinner from "../../component/shared/Spinner/Spinner";
-import ConfirmationModal from "../../component/shared/Dialogue_box/ConfirmationModal";
+import Spinner from "@/components/Spinner/Spinner";
+import ConfirmationModal from "@/components/Dialogue_box/ConfirmationModal";
 
 const Chamber = () => {
   const dispatch = useDispatch();

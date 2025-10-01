@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import Sidebar from "../component/shared/Sidebar/Sidebar";
-import Header from "../component/shared/Header/Header";
-import { useDispatch } from "react-redux";
+import Sidebar from "@/components/Sidebar/Sidebar";
+import Header from "@/components/Header/Header";
+// import { useDispatch } from "react-redux";
 
 const RootModule = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {

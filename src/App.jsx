@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import AllRoutes from "./config/AllRoutes";
+
+import AllRoutes from "@/router/AllRoutes.jsx";
 
 const App = () => {
   return (

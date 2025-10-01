@@ -1,10 +1,9 @@
-import MultiData from "../../component/feature/MultiData/MultiData"
+import MultiData from "@/feature/MultiData/MultiData"
 
 const Home = () => {
   return (
     <>
-
-    <MultiData />
+      <MultiData />
     </>
   )
 }
