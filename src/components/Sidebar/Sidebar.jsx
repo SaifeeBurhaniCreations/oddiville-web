@@ -79,7 +79,6 @@ const Sidebar = ({ open, onClose }) => {
           <li className="nav-item">
             <NavLink to="/dry-warehouse" className="nav-link">
               <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                {/* List Icon */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -110,8 +109,6 @@ const Sidebar = ({ open, onClose }) => {
               <span className="nav-link-text ms-1">Add Item</span>
             </NavLink>
           </li>
-
-          
 
           <li className="nav-item mt-3">
             <h6 className="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">
@@ -144,7 +141,7 @@ const Sidebar = ({ open, onClose }) => {
                   <circle cx="12" cy="15" r="2"></circle>
                 </svg> */}
                 <svg
-                width="16"
+                  width="16"
                   viewBox="0 -0.5 24 24"
                   id="meteor-icon-kit__solid-warehouse"
                   fill="none"
@@ -152,7 +149,7 @@ const Sidebar = ({ open, onClose }) => {
                 >
                   <path
                     fillRule="evenodd"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                     d="M4 23V10C4 9.4477 4.44772 8.99999 5 8.99999H19C19.5523 8.99999 20 9.4477 20 10V23H4zM18 11H6V23H18V11zM1 23C0.447715 23 0 22.5523 0 22V6.6439C0 5.85962 0.458406 5.14771 1.17239 4.82317L11.1724 0.27772C11.6982 0.03869 12.3018 0.03869 12.8276 0.27772L22.8276 4.82317C23.5416 5.14771 24 5.85962 24 6.6439V22C24 22.5523 23.5523 23 23 23H1zM6 13H18V15H6V13zM6 21H18V23H6V21zM6 17H18V19H6V17z"
                     fill="currentColor"
                   />
@@ -170,7 +167,6 @@ const Sidebar = ({ open, onClose }) => {
           <li className="nav-item">
             <NavLink to="work-location" className="nav-link">
               <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                {/* Location SVG */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16px"
@@ -189,6 +185,30 @@ const Sidebar = ({ open, onClose }) => {
               <span className="nav-link-text ms-1">List Locations</span>
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink to="Upload-location" className="nav-link">
+              <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16px"
+                  height="16px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+
+                  <polyline points="7 5 12 0 17 5" />
+                  <line x1="12" y1="0" x2="12" y2="7" />
+                </svg>
+              </div>
+              <span className="nav-link-text ms-1">Upload Locations</span>
+            </NavLink>
+          </li>
 
           <li className="nav-item mt-3">
             <h6 className="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">
@@ -198,7 +218,6 @@ const Sidebar = ({ open, onClose }) => {
           <li className="nav-item">
             <NavLink to="lane" className="nav-link">
               <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                {/* Lane / Road SVG */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16px"
@@ -229,7 +248,6 @@ const Sidebar = ({ open, onClose }) => {
           <li className="nav-item">
             <NavLink to="raw-material" className="nav-link">
               <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                {/* Raw Material (Box / Package) Icon */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16px"
@@ -258,7 +276,6 @@ const Sidebar = ({ open, onClose }) => {
           <li className="nav-item">
             <NavLink to="raw-material-other" className="nav-link">
               <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                {/* Products (Stacked Boxes) Icon */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16px"
@@ -288,7 +305,6 @@ const Sidebar = ({ open, onClose }) => {
           <li className="nav-item">
             <NavLink to="/logout" className="nav-link">
               <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                {/* Logout Icon */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16px"

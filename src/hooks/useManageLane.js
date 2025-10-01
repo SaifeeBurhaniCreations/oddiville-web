@@ -1,0 +1,125 @@
+
+
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { useFormValidator } from "/custom_library/formValidator/useFormValidator";
+import { create, modify, fetchLanes } from "@/services/LaneService";
+import {
+    handleModifyData,
+    handlePostData,
+    handleFetchData,
+} from "@/redux/LaneDataSlice";
+import { initialLaneState, laneValidationSchema } from "@/schemas/LaneSchema";
+
+const useManageLane = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const param = useParams();
+    const { id } = param;
+
+    const lanes = useSelector((state) => state.lane.data);
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const form = useFormValidator(
+        initialLaneState,
+        laneValidationSchema,
+        { validateOnChange: true, debounce: 300 }
+    );
+
+  
+    useEffect(() => {
+        const fetchAll = async () => {
+       
+            setIsLoading(true); 
+            try {
+                const getLane = await fetchLanes();
+                dispatch(handleFetchData(getLane.data));
+            } catch (error) {
+                toast.error("Failed to fetch data");
+                console.error(error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+    
+        if (!lanes || lanes.length === 0) {
+             fetchAll();
+        }
+    }, [dispatch, lanes]);
+
+
+
+    useEffect(() => {
+        if (id && lanes?.length > 0) {
+            const data = lanes.find((lane) => lane.id === id || lane._id === id);
+            if (data) {
+                form.setFields({
+                    name: data.name || "",
+                    description: data.description || "",
+                });
+            }
+        } else if (!id) {
+          
+            form.resetForm();
+        }
+    }, [id, lanes, form.setFields, form.resetForm]);
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const result = form.validateForm();
+    
+        if (!result.success) return;
+
+        setIsLoading(true);
+        try {
+            if (!id) {
+                // Create
+                const response = await create(result.data);
+                if (response.status === 201) {
+                    dispatch(handlePostData(response.data));
+                    toast.success("Lane is Added !!");
+                    form.resetForm();
+                    navigate("/lane");
+                } else {
+                    toast.error(response.data.error || "Failed to add lane.");
+                }
+            } else {
+                // Update
+                const response = await modify({ formData: result.data, id });
+                if (response.status === 200) {
+                    dispatch(handleModifyData(response.data));
+                    toast.success("Lane is Updated !!");
+                    form.resetForm();
+                    navigate("/lane");
+                } else {
+                    toast.error(response.data.error || "Failed to update lane.");
+                }
+            }
+        } catch (error) {
+            toast.error("An error occurred while processing the lane.");
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleExit = () => {
+        form.resetForm();
+        navigate("/lane");
+    };
+
+    return {
+        id,
+        form,
+        isLoading,
+        handleSubmit,
+        handleExit,
+    };
+};
+
+export default useManageLane;
