@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { fetchLanes, remove as removeLane } from "@/services/LaneService";
-import { handleFetchData, handleRemoveData } from "@/redux/LaneDataSlice";
+import { handleFetchData, handleDeleteData } from "@/redux/LaneDataSlice";
 
 const useManageLanes = () => {
     const [showModal, setShowModal] = useState(false);

@@ -1,8 +1,6 @@
-
 import Spinner from "@/components/Spinner/Spinner";
 
 const LaneForm = ({ id, form, isLoading, handleSubmit, handleExit }) => {
-
     const { values, errors, setField, isValid } = form;
 
     return (
@@ -23,8 +21,6 @@ const LaneForm = ({ id, form, isLoading, handleSubmit, handleExit }) => {
 
                 <div className="card-body pb-4">
                     <div className="grid-cs gtc-1 gap-3">
-                        
-                  
                         <div className="mb-3">
                             <label className="form-label fw-semibold">Lane Name</label>
                             <input
@@ -32,41 +28,27 @@ const LaneForm = ({ id, form, isLoading, handleSubmit, handleExit }) => {
                                 name="name"
                                 value={values.name}
                                 onChange={(e) => setField("name", e.target.value)}
-                                className={`form-control ${
-                                    errors.name ? "is-invalid" : ""
-                                }`}
+                                className={`form-control ${errors.name ? "is-invalid" : ""}`}
                                 placeholder="Enter Lane Name"
                             />
-                            {errors.name && (
-                                <div className="invalid-feedback">{errors.name}</div>
-                            )}
+                            {errors.name && <div className="invalid-feedback">{errors.name}</div>}
                         </div>
 
-                    
                         <div className="mb-3">
-                            <label className="form-label fw-semibold">
-                                Lane Description
-                            </label>
+                            <label className="form-label fw-semibold">Lane Description</label>
                             <input
                                 type="text"
                                 name="description"
                                 value={values.description}
                                 onChange={(e) => setField("description", e.target.value)}
-                                className={`form-control ${
-                                    errors.description ? "is-invalid" : ""
-                                }`}
+                                className={`form-control ${errors.description ? "is-invalid" : ""}`}
                                 placeholder="Enter Lane Description"
                             />
-                            {errors.description && (
-                                <div className="invalid-feedback">
-                                    {errors.description}
-                                </div>
-                            )}
+                            {errors.description && <div className="invalid-feedback">{errors.description}</div>}
                         </div>
                     </div>
                 </div>
 
-                
                 <div className="card-footer text-end">
                     <button
                         type="submit"

@@ -1,4 +1,3 @@
-
 import { NavLink } from "react-router-dom";
 import Spinner from "@/components/Spinner/Spinner";
 import { formatDate } from "@/util/formatDate"; 
@@ -18,26 +17,25 @@ const TableWrapper = ({ children }) => (
 );
 
 const renderTableRows = (data, handleDeleteClick) => {
- 
+    const safeData = [...data]; // ✅ shallow copy to avoid reference bug
+
     const getLaneData = (lane, key) => lane[key] || lane.data?.[key];
     const getLaneId = (lane) => lane.id || lane._id || lane.data?.id || lane.data?._id;
 
-    return data.map((lane) => (
+    return safeData.map((lane) => (
         <tr key={getLaneId(lane)}>
-            {console.log(getLaneId(lane))
-            }
             <td>
-                <p className="text-xl font-weight-bold mb-0">{getLaneData(lane, 'name')}</p>
-                <p className="text-xs text-secondary mb-0">{getLaneData(lane, 'description')}</p>
+                <p className="text-xl font-weight-bold mb-0">{getLaneData(lane, "name")}</p>
+                <p className="text-xs text-secondary mb-0">{getLaneData(lane, "description")}</p>
             </td>
             <td className="text-center">
                 <span className="text-secondary text-xs font-weight-bold">
-                    {formatDate(getLaneData(lane, 'updatedAt'))}
+                    {formatDate(getLaneData(lane, "updatedAt"))}
                 </span>
             </td>
             <td className="text-center">
                 <span className="text-secondary text-xs font-weight-bold">
-                    {formatDate(getLaneData(lane, 'createdAt'))}
+                    {formatDate(getLaneData(lane, "createdAt"))}
                 </span>
             </td>
             <td>
@@ -50,8 +48,7 @@ const renderTableRows = (data, handleDeleteClick) => {
                     </NavLink>
                     <button
                         className="btn btn-link text-danger text-gradient px-3 mb-0"
-                      
-                        onClick={() => handleDeleteClick(lane)} 
+                        onClick={() => handleDeleteClick(lane)}
                     >
                         <i className="far fa-trash-alt me-2" /> Delete
                     </button>
@@ -62,7 +59,6 @@ const renderTableRows = (data, handleDeleteClick) => {
 };
 
 const LaneTable = ({ filteredData, isLoading, handleDeleteClick }) => {
-    
     if (isLoading) {
         return (
             <div className="text-center py-5" colSpan={4}>
@@ -79,7 +75,6 @@ const LaneTable = ({ filteredData, isLoading, handleDeleteClick }) => {
             </TableWrapper>
         );
     }
-
 
     return (
         <TableWrapper>
