@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {useFormValidator} from "../../../custom_library/formValidator/useFormValidator"
+import { useFormValidator } from "@/lib/custom_library/formValidator/useFormValidator"; 
+
 import { LoginService } from "@/services/AuthService";
 import Spinner from "@/components/Spinner/Spinner";
 

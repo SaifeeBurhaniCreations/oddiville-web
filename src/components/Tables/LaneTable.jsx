@@ -24,6 +24,8 @@ const renderTableRows = (data, handleDeleteClick) => {
 
     return data.map((lane) => (
         <tr key={getLaneId(lane)}>
+            {console.log(getLaneId(lane))
+            }
             <td>
                 <p className="text-xl font-weight-bold mb-0">{getLaneData(lane, 'name')}</p>
                 <p className="text-xs text-secondary mb-0">{getLaneData(lane, 'description')}</p>

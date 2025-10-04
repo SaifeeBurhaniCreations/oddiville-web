@@ -8,8 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     handleModifyData,
     handlePostData,
-} from "@/redux/WorkLocationSlice";
-import { useFormValidator } from "/custom_library/formValidator/useFormValidator"; 
+} from "@/redux/WorkLocationSlice";import { useFormValidator } from "@/lib/custom_library/formValidator/useFormValidator";  
 import { initialLocationState, locationValidationSchema } from "@/schemas/WorkLocationSchema";
 
 const useManageWorkLocation = () => {

@@ -2,7 +2,7 @@ import useManageLanes from "@/hooks/useManageLanes";
 import LaneTable from "@/components/tables/LaneTable";
 import DeleteLaneModal from "@/components/modals/DeleteLaneModal";
 
-import AddLane from "@/feature/Lane/Create/AddLane"; 
+import AddLane from "@/components/feature/Lane/Create/AddLane"; 
 
 const Lane = () => {
    
@@ -23,7 +23,7 @@ const Lane = () => {
                 <div className="col-md-8">
                     <div className="card mb-4">
                         <div className="card-header pb-0">
-                            <h5>Work Locations</h5> 
+                            <h5>List Lane</h5> 
                         </div>
                         <div className="card-body">
                             <div className="table-responsive p-0">

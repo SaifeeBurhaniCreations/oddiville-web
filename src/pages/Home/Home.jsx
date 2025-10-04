@@ -1,4 +1,4 @@
-import MultiData from "@/feature/MultiData/MultiData"
+import MultiData from "@/components/feature/MultiData/MultiData"
 
 const Home = () => {
   return (

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { useFormValidator } from "/custom_library/formValidator/useFormValidator";
+import { useFormValidator } from "@/lib/custom_library/formValidator/useFormValidator.js"; 
 import { create, modify, fetchLanes } from "@/services/LaneService";
 import {
     handleModifyData,
@@ -66,7 +66,7 @@ const useManageLane = () => {
           
             form.resetForm();
         }
-    }, [id, lanes, form.setFields, form.resetForm]);
+    }, [id, lanes]);
 
 
     const handleSubmit = async (e) => {
@@ -80,6 +80,8 @@ const useManageLane = () => {
             if (!id) {
                 // Create
                 const response = await create(result.data);
+                console.log(response.status);
+                
                 if (response.status === 201) {
                     dispatch(handlePostData(response.data));
                     toast.success("Lane is Added !!");
@@ -88,8 +90,12 @@ const useManageLane = () => {
                 } else {
                     toast.error(response.data.error || "Failed to add lane.");
                 }
+                console.log("button press");
+                
             } else {
                 // Update
+                console.log(id);
+                
                 const response = await modify({ formData: result.data, id });
                 if (response.status === 200) {
                     dispatch(handleModifyData(response.data));

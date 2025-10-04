@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Spinner from "@/components/Spinner/Spinner";
 import Banners from "@/components/Banners/Banners";
-import ItemFormFields from "@/components/Services/ItemFormFields";
-import { initialValues, validationRules } from "@/components/Services/serviceFormConfig";
+import ItemFormFields from "@/components/forms/ItemFormFields";
+import { initialValues, validationRules } from "@/schemas/ServiceSchema";
 import useServiceForm from "@/hooks/useManageServiceItem";
 
 const CreateService = () => {
@@ -14,6 +14,7 @@ const CreateService = () => {
 
   const serviceData = useSelector((state) => state.ServiceDataSlice.data);
   const chambers = useSelector((state) => state.ServiceDataSlice.chamber) || [];
+console.log(chambers);
 
   const {
     form,

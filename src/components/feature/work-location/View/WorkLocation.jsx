@@ -3,7 +3,7 @@ import useManageWorkLocations from "@/hooks/useManageWorkLocations";
 import WorkLocationTable from "@/components/tables/WorkLocationTable";
 import DeleteLocationModal from "@/components/modals/DeleteLocationModal";
 
-import AddWorkLocation from "@/feature/work-location/Create/AddWorkLocation";
+import AddWorkLocation from "@/components/feature/work-location/Create/AddWorkLocation";
 
 const WorkLocation = () => {
     

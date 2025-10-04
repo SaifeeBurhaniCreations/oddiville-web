@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { useFormValidator } from "custom_library/formValidator/useFormValidator"; 
+import { useFormValidator } from "@/lib/custom_library/formValidator/useFormValidator"; 
 import {
     createChamber,
     removeChamber,

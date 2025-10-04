@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { create, modify, fetchDryWarehouse } from "@/services/DryChamberService";
 import { handleModifyData, handlePostData, handleFetchCategory } from "@/redux/ServiceDataSlice";
-import { useFormValidator } from "custom_library/formValidator/useFormValidator";
+import { useFormValidator } from "@/lib/custom_library/formValidator/useFormValidator";
 
 const  useManageServiceItem = ({
   id,

@@ -1,4 +1,4 @@
-// src/components/lists/ChamberList.jsx
+
 
 import React from "react";
 import Spinner from "@/components/Spinner/Spinner";

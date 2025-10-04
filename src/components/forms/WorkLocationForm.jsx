@@ -34,7 +34,7 @@ const WorkLocationForm = ({
                 <div className="card-body grid-cs gtc-1 pb-4">
                    
                     <Banners
-                        name="Uplaod Location"
+                        name="Upload Location"
                         form={form} 
                         getBanners={fetchedBanners} 
                         deleteBanners={deleteBanners}

@@ -6,8 +6,8 @@ import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
 import { handleModifyData, handlePostData } from "@/redux/RawMaterialDataSlice"
 import Banners from './Banners'
-import { useFormValidator } from "custom_library/formValidator/useFormValidator";
-import FormField from "custom_library/formValidator/components/FormField";
+import { useFormValidator } from "@/lib/custom_library/formValidator/useFormValidator";
+import FormField from "@/lib/custom_library/formValidator/components/FormField";
 
 const AddWorkLocation = () => {
 
