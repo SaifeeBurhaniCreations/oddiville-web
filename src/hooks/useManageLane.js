@@ -1,5 +1,3 @@
-
-
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,8 +14,7 @@ import { initialLaneState, laneValidationSchema } from "@/schemas/LaneSchema";
 const useManageLane = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const param = useParams();
-    const { id } = param;
+    const { id } = useParams();
 
     const lanes = useSelector((state) => state.lane.data);
 
@@ -29,11 +26,10 @@ const useManageLane = () => {
         { validateOnChange: true, debounce: 300 }
     );
 
-  
+    // Fetch all lanes
     useEffect(() => {
         const fetchAll = async () => {
-       
-            setIsLoading(true); 
+            setIsLoading(true);
             try {
                 const getLane = await fetchLanes();
                 dispatch(handleFetchData(getLane.data));
@@ -45,14 +41,12 @@ const useManageLane = () => {
             }
         };
 
-    
         if (!lanes || lanes.length === 0) {
-             fetchAll();
+            fetchAll();
         }
     }, [dispatch, lanes]);
 
-
-
+    // Prefill form when editing
     useEffect(() => {
         if (id && lanes?.length > 0) {
             const data = lanes.find((lane) => lane.id === id || lane._id === id);
@@ -63,16 +57,15 @@ const useManageLane = () => {
                 });
             }
         } else if (!id) {
-          
             form.resetForm();
         }
     }, [id, lanes]);
 
-
+    // Submit handler
     const handleSubmit = async (e) => {
         e.preventDefault();
         const result = form.validateForm();
-    
+
         if (!result.success) return;
 
         setIsLoading(true);
@@ -80,26 +73,22 @@ const useManageLane = () => {
             if (!id) {
                 // Create
                 const response = await create(result.data);
-                console.log(response.status);
-                
                 if (response.status === 201) {
                     dispatch(handlePostData(response.data));
-                    toast.success("Lane is Added !!");
+                    toast.success("Lane Added !!");
                     form.resetForm();
                     navigate("/lane");
                 } else {
                     toast.error(response.data.error || "Failed to add lane.");
                 }
-                console.log("button press");
-                
             } else {
                 // Update
-                console.log(id);
-                
                 const response = await modify({ formData: result.data, id });
                 if (response.status === 200) {
+                 
+                    console.log(response.data)
                     dispatch(handleModifyData(response.data));
-                    toast.success("Lane is Updated !!");
+                    toast.success("Lane Updated !!");
                     form.resetForm();
                     navigate("/lane");
                 } else {
@@ -107,7 +96,7 @@ const useManageLane = () => {
                 }
             }
         } catch (error) {
-            toast.error("An error occurred while processing the lane.");
+            toast.error("Error while processing lane.");
             console.error(error);
         } finally {
             setIsLoading(false);
