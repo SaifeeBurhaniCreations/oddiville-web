@@ -21,23 +21,23 @@ const renderTableRows = (data, handleDeleteClick) => {
     // console.log(data);
     
  
-    // const getLaneData = (lane, key) => lane[key] || lane.data?.[key];
+    const getLaneData = (lane, key) => lane[key] || lane.data?.[key];
     const getLaneId = (lane) => lane.id || lane._id || lane.data?.id || lane.data?._id;
 
     return data.map((lane, index) => (
         <tr key={index}>
             <td>
-                <p className="text-xl font-weight-bold mb-0">{lane?.name}</p>
-                <p className="text-xs text-secondary mb-0">{lane?.description}</p>
+                <p className="text-xl font-weight-bold mb-0">{getLaneData(lane, "name")}</p>
+                <p className="text-xs text-secondary mb-0">{getLaneData(lane, "description")}</p>
             </td>
             <td className="text-center">
                 <span className="text-secondary text-xs font-weight-bold">
-                    {formatDate(lane?.updatedAt)}
+                    {formatDate(getLaneData(lane, "updatedAt"))}
                 </span>
             </td>
             <td className="text-center">
                 <span className="text-secondary text-xs font-weight-bold">
-                    {formatDate(lane?.createdAt)}
+                    {formatDate(getLaneData(lane, "createdAt"))}
                 </span>
             </td>
             <td>
