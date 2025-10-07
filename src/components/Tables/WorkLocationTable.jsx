@@ -22,7 +22,7 @@ const TableWrapper = ({ children }) => (
 
 const renderTableRows = (data, handleDeleteClick) => {
     return data.map((location) => (
-        <tr key={location._id}>
+        <tr key={location.id}>
             <td>
                 <img
                     src={location?.banner?.s3Url || "/assets/img/png/fallback_img.png"}
