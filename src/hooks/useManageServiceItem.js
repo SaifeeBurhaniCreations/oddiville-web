@@ -3,14 +3,15 @@ import { toast } from "react-toastify";
 import { create, modify, fetchDryWarehouse } from "@/services/DryChamberService";
 import { handleModifyData, handlePostData, handleFetchCategory } from "@/redux/ServiceDataSlice";
 import { useFormValidator } from "@/lib/custom_library/formValidator/useFormValidator";
+import { initialValues, validationRules } from "@/schemas/ItemForm";
 
 const  useManageServiceItem = ({
   id,
   serviceData,
   dispatch,
   navigate,
-  initialValues,
-  validationRules,
+  // initialValues,
+  // validationRules,
 //   setFetchedBanners,
 //   setBanners,
 //   banners

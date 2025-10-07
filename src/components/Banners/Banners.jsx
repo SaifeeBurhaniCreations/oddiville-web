@@ -12,18 +12,26 @@ const Banners = ({
   const bannerRef = useRef();
   const [banner, setBanner] = useState({ banner: null, preview: "" });
   const [typeCheckError, setTypeCheckError] = useState("");
-  
 
   const updateBanner = (file) => {
     if (!file) return;
 
     // Check file type
+    // const validTypes = ["image/png", "image/jpeg"];
+    // if (!validTypes.includes(file.type)) {
+    //   setBanner({ banner: null, preview: "" });
+    //   setTypeCheckError("Only valid PNG and JPG images are allowed");
+    //   if (bannerRef.current) bannerRef.current.value = "";
+    //   if (form?.setField) form.setField("sample_image", null);
+    //   return;
+    // }
+
     const validTypes = ["image/png", "image/jpeg"];
     if (!validTypes.includes(file.type)) {
       setBanner({ banner: null, preview: "" });
-      setTypeCheckError("Only valid PNG and JPG images are allowed");
+      setTypeCheckError("Only PNG or JPG images are allowed");
+      form?.setField?.("sample_image", null);
       if (bannerRef.current) bannerRef.current.value = "";
-      if (form?.setField) form.setField("sample_image", null);
       return;
     }
 
@@ -31,11 +39,19 @@ const Banners = ({
     setTypeCheckError("");
 
     // Generate preview
+    // const reader = new FileReader();
+    // reader.onload = () => {
+    //   setBanner({ banner: file, preview: reader.result });
+    //   if (form?.setField) form.setField("sample_image", file);
+    //   if (onFileChange) onFileChange({ target: { files: [file] } });
+    // };
+    // reader.readAsDataURL(file);
+
+    setTypeCheckError("");
     const reader = new FileReader();
     reader.onload = () => {
       setBanner({ banner: file, preview: reader.result });
-      if (form?.setField) form.setField("sample_image", file);
-      if (onFileChange) onFileChange({ target: { files: [file] } });
+      form?.setField?.("sample_image", file);
     };
     reader.readAsDataURL(file);
   };
@@ -46,7 +62,6 @@ const Banners = ({
 
   return (
     <>
-    
       <input
         className="d-none"
         type="file"
@@ -62,7 +77,9 @@ const Banners = ({
         <div className="card-header d-flex justify-content-between align-items-center">
           <h6 className="m-0">{name}</h6>
           {form?.errors.sample_image && (
-            <span className="text-danger small">{form.errors.sample_image}</span>
+            <span className="text-danger small">
+              {form.errors.sample_image}
+            </span>
           )}
           {typeCheckError && (
             <span className="text-danger small">{typeCheckError}</span>
@@ -76,7 +93,6 @@ const Banners = ({
                 deleteBanners?.includes(getBanners?.key) ? "opacity-50" : ""
               }`}
             >
-         
               <div className="mb-2">
                 {banner?.preview ? (
                   <button
@@ -97,7 +113,6 @@ const Banners = ({
                 )}
               </div>
 
-          
               <img
                 src={banner?.preview || getBanners?.url}
                 alt="Preview"

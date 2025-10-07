@@ -1,6 +1,6 @@
 import useChamberManagement from  "@/hooks/useChamberManagement"
-const ItemFormFields = ({ form, chambers }) => {
-  const {categories} = useChamberManagement()
+const ItemFormFields = ({ form, chambers  }) => {
+  const {chambersList} = useChamberManagement()
 
   
   
@@ -77,7 +77,7 @@ const ItemFormFields = ({ form, chambers }) => {
       >
         <option value="">Select Category</option>
 
-        {categories?.map((category, index) =>
+        {chambersList.current?.map((category, index) =>
           category.tag === "dry" ? (
             <option value={category.chamber_id} key={index}>
               {category.chamber_name}

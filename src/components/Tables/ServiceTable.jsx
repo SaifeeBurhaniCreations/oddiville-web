@@ -19,6 +19,8 @@ const TableWrapper = ({ children }) => (
 );
 
 const renderTableRows = (filteredData, handleDeleteClick) => {
+    console.log(filteredData);
+    
     return filteredData.map((service, ind) => (
         <tr key={ind}>
             <td>
