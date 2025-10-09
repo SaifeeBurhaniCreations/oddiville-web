@@ -23,10 +23,6 @@ const AddWorkLocation = () => {
   const [banners, setBanners] = useState()
   const [fetchedBanners, setFetchedBanners] = useState()
   const [deleteBanners, setDeleteBanners] = useState()
-  const [initialValues, setInitialValues] = useState({
-    name: '',
-    sample_image: null
-  })  
 
   const {
     values,
@@ -140,12 +136,13 @@ const AddWorkLocation = () => {
                   <FormField name='name' form={{ values, setField, errors }}>
                     {
                       ({value, error, onChange})=>(
-                        <>
+                        <div className='form-floating'>
                           <input type="text" value={value} onChange={(e)=>onChange(e.target.value)} className={`form-control ${error && 'is-invalid'}`} name="name" placeholder="Item Name" id="" />
+                          <label>Item Name</label>
                           {
                             error && <small className='text-sm text-danger'>{error}</small>
                           }
-                        </>
+                        </div>
                       )
                     }
                   </FormField>

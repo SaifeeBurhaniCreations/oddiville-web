@@ -54,7 +54,7 @@ const AddProductForm = ({
           </div>
         )}
      
-        <div className="mb-3">
+        <div className="form-floating mb-3">
           <input
             className={`form-control ${
               productErrors.product_name ? "is-invalid" : ""
@@ -64,13 +64,14 @@ const AddProductForm = ({
             value={newProduct.product_name}
             onChange={handleInputChange}
           />
+          <label>Product Name</label>
           {productErrors.product_name && (
             <div className="invalid-feedback">{productErrors.product_name}</div>
           )}
         </div>
 
  
-        <div className="mb-3">
+        <div className="form-floating mb-3">
           <input
             className={`form-control ${productErrors.rent ? "is-invalid" : ""}`}
             name="rent"
@@ -78,6 +79,7 @@ const AddProductForm = ({
             value={newProduct.rent}
             onChange={handleInputChange}
           />
+          <label>Rent per Kg</label>
           {productErrors.rent && (
             <div className="invalid-feedback">{productErrors.rent}</div>
           )}

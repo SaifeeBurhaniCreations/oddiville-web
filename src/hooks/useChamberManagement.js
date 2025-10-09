@@ -26,6 +26,7 @@ const useChamberManagement = () => {
 );
 
 let chambersList = useRef();
+
   useEffect(() => {
     const loadChambers = async () => {
       if (!categories || categories.length === 0) {
@@ -38,8 +39,8 @@ let chambersList = useRef();
               payload: res.data,
             });
           }
-          console.log(res.data);
           chambersList.current = res.data;
+          console.log(chambersList.current);
         } catch (error) {
           console.error(error);
           toast.error("Failed to fetch chambers");

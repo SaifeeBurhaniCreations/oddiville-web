@@ -45,7 +45,7 @@ const ChamberForm = ({ addChamberForm, handleSubmit, isLoading }) => {
             </div>
 
             
-            <div className="form-floating">
+            <div>
                 <select
                     name="tag"
                     value={values.tag}

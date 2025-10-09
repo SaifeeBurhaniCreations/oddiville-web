@@ -44,7 +44,7 @@ const WorkLocationForm = ({
                     
                     <div className="grid-cs gtc-1">
                        
-                        <div>
+                        <div className="form-floating">
                             <input
                                 type="text"
                                 value={values.location_name}
@@ -53,11 +53,12 @@ const WorkLocationForm = ({
                                 name="location_name"
                                 placeholder="Location Name"
                             />
+                            <label htmlFor="">Location Name</label>
                             {errors.location_name && <div className="text-danger mt-1">{errors.location_name}</div>}
                         </div>
                         
                     
-                        <div>
+                        <div className="form-floating">
                             <input
                                 type="text"
                                 value={values.description}
@@ -66,6 +67,7 @@ const WorkLocationForm = ({
                                 name="description"
                                 placeholder="Service Description"
                             />
+                            <label htmlFor="">Service Description</label>
                             {errors.description && <div className="text-danger mt-1">{errors.description}</div>}
                         </div>
                     </div>
