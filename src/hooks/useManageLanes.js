@@ -11,7 +11,6 @@ const useManageLanes = () => {
     const [isInitialLoading, setIsInitialLoading] = useState(false); 
     const [isDeleting, setIsDeleting] = useState(false); 
     const [filteredData, setFilteredData] = useState([]);
-
     const dispatch = useDispatch();
     const lanes = useSelector((state) => state.lane.data);
 

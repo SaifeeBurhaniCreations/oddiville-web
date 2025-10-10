@@ -25,7 +25,7 @@ const renderTableRows = (data, handleDeleteClick) => {
         <tr key={location.id}>
             <td>
                 <img
-                    src={location?.banner?.s3Url || "/assets/img/png/fallback_img.png"}
+                    src={location?.sample_image?.url || "/assets/img/png/fallback_img.png"}
                     className="avatar avatar-lg"
                     alt="banner"
                 />

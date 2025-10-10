@@ -42,7 +42,7 @@ const renderTableRows = (data, handleDeleteClick) => {
                 <div className="d-flex">
                     <NavLink
                         to={`/lane/${getLaneId(lane)}`}
-                        className="btn btn-link m-0 text-secondary font-weight-bold text-xs"
+                        className="btn btn-link m-0 font-weight-bold text-xs text-info"
                     >
                         Edit
                     </NavLink>

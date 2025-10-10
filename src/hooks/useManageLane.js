@@ -75,7 +75,7 @@ const useManageLane = () => {
                 const response = await create(result.data);
                 if (response.status === 201) {
                     dispatch(handlePostData(response.data));
-                    toast.success("Lane Added !!");
+                    toast.success("Lane Added");
                     form.resetForm();
                     navigate("/lane");
                 } else {
@@ -85,12 +85,11 @@ const useManageLane = () => {
                 // Update
                 const response = await modify({ formData: result.data, id });
                 if (response.status === 200) {
-                 
-                    console.log(response.data)
                     dispatch(handleModifyData(response.data));
-                    toast.success("Lane Updated !!");
+                    toast.success("Lane Updated");
                     form.resetForm();
-                    navigate("/lane");
+                    navigate(`/lane`);
+                    window.location.reload()
                 } else {
                     toast.error(response.data.error || "Failed to update lane.");
                 }

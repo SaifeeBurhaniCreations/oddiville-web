@@ -25,7 +25,7 @@ const renderTableRows = (filteredData, handleDeleteClick) => {
         <tr key={ind}>
             <td>
                 <img
-                    src={service?.banner?.s3Url || "/assets/img/png/fallback_img.png"}
+                    src={service?.sample_image?.url || "/assets/img/png/fallback_img.png"}
                     className="avatar avatar-lg"
                     alt="banner"
                 />
