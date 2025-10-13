@@ -475,6 +475,23 @@
     }
 }
 
+@media (min-width: 640px) {
+    .main-layout {
+        grid-template-columns: 1fr 5fr !important;
+        transition: grid-template-columns 0.3s !important;
+    }
+
+    .main-layout.sidebar-closed {
+        grid-template-columns: 0 1fr !important;
+    }
+
+    .sidenav {
+        position: static !important;
+        transform: none !important;
+        width: 500px!important;
+    }
+}
+
 /* Mobile overlay */
 @media (max-width: 768px) {
     .main-layout {

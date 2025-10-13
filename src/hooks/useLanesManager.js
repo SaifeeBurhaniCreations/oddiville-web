@@ -4,7 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 import { useFormValidator } from "@/lib/custom_library/formValidator/useFormValidator";
-import { create, modify, fetchLanes, remove as removeLane } from "@/services/LaneService";
+import {
+  create,
+  modify,
+  fetchLanes,
+  remove as removeLane,
+} from "@/services/LaneService";
 
 import {
   handleFetchData,
@@ -22,7 +27,6 @@ const useLanesManager = () => {
 
   const lanes = useSelector((state) => state.lane.data);
 
-
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -33,42 +37,37 @@ const useLanesManager = () => {
   const [filteredData, setFilteredData] = useState([]);
   const lanesList = useRef([]);
 
-
   const form = useFormValidator(initialLaneState, laneValidationSchema, {
     validateOnChange: true,
     debounce: 300,
   });
 
-
-  useEffect(() => {
-    const loadLanes = async () => {
-      if (!lanes || lanes.length === 0) {
-        setIsInitialLoading(true);
-        try {
-          const res = await fetchLanes();
-          if (res?.status === 200) {
-            dispatch(handleFetchData(res.data));
-            lanesList.current = res.data;
-            setFilteredData(res.data);
-          } else {
-
-            console.warn("Couldn't fetch data", res);
-          }
-        } catch (error) {
-          console.error("Failed to fetch lanes:", error);
-          toast.error("Failed to fetch lanes");
-        } finally {
-          setIsInitialLoading(false);
+  const loadLanes = async () => {
+    if (!lanes || lanes.length === 0) {
+      setIsInitialLoading(true);
+      try {
+        const res = await fetchLanes();
+        if (res?.status === 200) {
+          dispatch(handleFetchData(res.data));
+          // lanesList.current = res.data;
+          setFilteredData(res.data);
+        } else {
+          console.warn("Couldn't fetch data", res);
         }
-      } else {
-        lanesList.current = lanes;
-        setFilteredData(lanes);
+      } catch (error) {
+        console.error("Failed to fetch lanes:", error);
+        toast.error("Failed to fetch lanes");
+      } finally {
+        setIsInitialLoading(false);
       }
-    };
-
+    } else {
+      lanesList.current = lanes;
+      setFilteredData(lanes);
+    }
+  };
+  useEffect(() => {
     loadLanes();
   }, [dispatch, lanes]);
-
 
   useEffect(() => {
     setFilteredData(lanes || []);
@@ -79,20 +78,16 @@ const useLanesManager = () => {
     if (id && lanes?.length > 0) {
       const laneToEdit = lanes.find((l) => l.id === id || l._id === id);
       if (laneToEdit) {
-
         form.setFields({
           name: laneToEdit.name || "",
           description: laneToEdit.description || "",
-
         });
       }
     } else if (!id) {
-
       if (typeof form.resetForm === "function") form.resetForm();
       else form.setFields(initialLaneState);
     }
   }, [id, lanes]);
-
 
   const handleSubmit = async (e) => {
     if (e && typeof e.preventDefault === "function") e.preventDefault();
@@ -105,7 +100,6 @@ const useLanesManager = () => {
       if (!id) {
         const response = await create(result.data);
         if (response.status === 201) {
-
           dispatch(handlePostData(response.data));
           toast.success("Lane added successfully");
           if (typeof form.resetForm === "function") form.resetForm();
@@ -121,11 +115,7 @@ const useLanesManager = () => {
           toast.success("Lane updated successfully");
           if (typeof form.resetForm === "function") form.resetForm();
           else form.setFields(initialLaneState);
-          try {
-            navigate("/lane");
-          } catch (navErr) {
-            console.error("Route not found: ", navErr);
-          }
+          navigate("/lane");
         } else {
           toast.error(response?.data?.error || "Failed to update lane");
         }
@@ -165,7 +155,6 @@ const useLanesManager = () => {
       setIsDeleting(false);
     }
   };
-
 
   const handleExit = () => {
     if (typeof form.resetForm === "function") form.resetForm();

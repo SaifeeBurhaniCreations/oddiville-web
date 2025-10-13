@@ -115,7 +115,7 @@ const Sidebar = ({ open, onClose }) => {
 
           <li className="nav-item mt-3">
             <h6 className="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">
-              Frozen Chamber
+              Chamber Management
             </h6>
           </li>
           <li className="nav-item">
