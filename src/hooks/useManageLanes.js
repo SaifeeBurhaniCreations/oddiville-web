@@ -14,6 +14,8 @@ const useManageLanes = () => {
     const dispatch = useDispatch();
     const lanes = useSelector((state) => state.lane.data);
 
+    console.log(lanes);
+    
     useEffect(() => {
         const fetchAll = async () => {
             setIsInitialLoading(true);
@@ -53,7 +55,7 @@ const useManageLanes = () => {
             const response = await removeLane(laneId);
             if (response.status === 200) {
                
-                dispatch(handleRemoveData(laneId));
+                dispatch(handleDeleteData(laneId));
                 toast.success("Lane deleted successfully!");
                 setShowModal(false);
                 setSelectedLane(null);

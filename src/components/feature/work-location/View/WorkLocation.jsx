@@ -28,7 +28,6 @@ const WorkLocation = () => {
                         </div>
                         <div className="card-body">
                             <div className="table-responsive p-0">
-                               {console.log(filteredData)}
                                 <WorkLocationTable
                                     filteredData={filteredData}
                                     isLoading={isLoading}

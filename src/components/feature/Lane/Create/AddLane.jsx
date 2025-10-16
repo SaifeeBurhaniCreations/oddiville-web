@@ -1,4 +1,4 @@
-import useManageLane from "@/hooks/useLanesManager";
+import useManageLane from "@/hooks/useManageLane";
 import LaneForm from "@/components/forms/LaneForm";
 
 const AddLane = () => {

@@ -1,4 +1,4 @@
-import useManageLanes from "@/hooks/useLanesManager";
+import useManageLanes from "@/hooks/useManageLanes";
 import LaneTable from "@/components/tables/LaneTable";
 import DeleteLaneModal from "@/components/modals/DeleteLaneModal";
 

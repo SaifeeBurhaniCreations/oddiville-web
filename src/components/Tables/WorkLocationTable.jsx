@@ -21,40 +21,41 @@ const TableWrapper = ({ children }) => (
 );
 
 const renderTableRows = (data, handleDeleteClick) => {
-    return data.map((location) => (
-        <tr key={location.id}>
+    console.log(data);
+    return data.map((location, ind) => (
+        <tr key={ind}>
             <td>
                 <img
-                    src={location?.sample_image?.url || "/assets/img/png/fallback_img.png"}
+                    src={location?.sample_image?.url || location?.data?.sample_image?.url || "/assets/img/png/fallback_img.png"}
                     className="avatar avatar-lg"
                     alt="banner"
                 />
             </td>
             <td>
-                <p className="text-xl font-weight-bold mb-0">{location.location_name}</p>
-                <p className="text-xs text-secondary mb-0">{location.description}</p>
+                <p className="text-xl font-weight-bold mb-0">{location?.location_name || location?.data?.location_name}</p>
+                <p className="text-xs text-secondary mb-0">{location?.description || location?.data?.description}</p>
             </td>
             <td className="text-center">
                 <span className="text-secondary text-xs font-weight-bold">
-                    {formatDate(location?.updatedAt)}
+                    {formatDate(location?.updatedAt || location?.data?.updatedAt)}
                 </span>
             </td>
             <td className="text-center">
                 <span className="text-secondary text-xs font-weight-bold">
-                    {formatDate(location?.createdAt)}
+                    {formatDate(location?.createdAt||location?.data?.createdAt)}
                 </span>
             </td>
             <td>
                 <div className="d-flex">
                     <NavLink
-                        to={`/work-location/${location?.id}`}
+                        to={`/work-location/${location?.id||location?.data?.id}`}
                         className="btn btn-link m-0 text-secondary font-weight-bold text-xs"
                     >
                         Edit
                     </NavLink>
                     <button
                         className="btn btn-link text-danger text-gradient px-3 mb-0"
-                        onClick={() => handleDeleteClick(location)}
+                        onClick={() => handleDeleteClick(location||location?.data)}
                     >
                         <i className="far fa-trash-alt me-2" /> Delete
                     </button>

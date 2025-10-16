@@ -12,6 +12,7 @@ const Banners = ({
   const bannerRef = useRef();
   const [banner, setBanner] = useState({ banner: null, preview: "" });
   const [typeCheckError, setTypeCheckError] = useState("");
+console.log(deleteBanners);
 
   const updateBanner = (file) => {
     if (!file) return;
@@ -90,7 +91,8 @@ const Banners = ({
           {getBanners ? (
             <div
               className={`position-relative d-inline-block ${
-                deleteBanners?.includes(getBanners?.key) ? "opacity-50" : ""
+                // deleteBanners?.includes(getBanners?.key) ? "opacity-50" : ""
+                deleteBanners ? "opacity-50" : ""
               }`}
             >
               <div className="mb-2">
