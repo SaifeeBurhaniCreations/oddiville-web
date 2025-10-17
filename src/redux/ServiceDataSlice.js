@@ -15,7 +15,6 @@ const ServiceDataSlice = createSlice({
             
         },
         handleFetchData: (state, action) => {
-            console.log(handleFetchData);
             
             state.data = action.payload
         },

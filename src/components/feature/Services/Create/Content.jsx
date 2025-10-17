@@ -8,7 +8,6 @@ const Content = ({ content, setContent, sliderContent, setSliderContent }) => {
         const newContent = [...content, { heading: "", description: "" }];
         setContent(newContent);
     };
-    console.log(content)
 
     // Update a specific content field
     const updateContent = (index, field, value) => {

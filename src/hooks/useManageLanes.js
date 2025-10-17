@@ -14,7 +14,6 @@ const useManageLanes = () => {
     const dispatch = useDispatch();
     const lanes = useSelector((state) => state.lane.data);
 
-    console.log(lanes);
     
     useEffect(() => {
         const fetchAll = async () => {

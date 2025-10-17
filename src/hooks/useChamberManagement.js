@@ -40,9 +40,7 @@ let chambersList = useRef();
             });
           }
           chambersList.current = res.data;
-          console.log(chambersList.current);
         } catch (error) {
-          console.error(error);
           toast.error("Failed to fetch chambers");
         } finally {
           setIsInitialLoading(false);
@@ -51,7 +49,6 @@ let chambersList = useRef();
     };
     loadChambers();
   }, [categories, dispatch]);
-// console.log(chambersList.current);
 
   
 
@@ -97,7 +94,6 @@ let chambersList = useRef();
       setIsLoading(false);
     }
   };
-  // console.log(categories);
 
   return {
     addChamberForm,

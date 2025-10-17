@@ -59,7 +59,6 @@ const AddWorkLocation = () => {
       // formPayload.forEach((value, key) => {
       //   payloadObject[key] = value;
       // });
-      // console.log("Form Payload:", payloadObject); // Log the payload
 
       // return
 

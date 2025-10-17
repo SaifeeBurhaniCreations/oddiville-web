@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import { log } from "console";
 
 const laneSlice = createSlice({
   name: "lane",
@@ -27,9 +26,6 @@ const laneSlice = createSlice({
     //   );
 
     // handleModifyData: (state, action) => {
-    //     console.log(action.payload)
-    //     console.log(state.data.map(val=>val.id == action.payload.id))
-    //     // console.log(state.data)
     //     const updated = action.payload;
     //     state.data = state.data.map(item =>
     //         item.id == updated.id

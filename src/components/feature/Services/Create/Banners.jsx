@@ -93,7 +93,6 @@ const Banners = ({
                   deleteBanners?.includes(getBanners?.s3Key) ? "fade-cs" : ""
                 }`}
               >
-                {console.log(getBanners)}
                 {banner?.preview ? (
                   <img src={banner.preview} alt="Preview" />
                 ) : (

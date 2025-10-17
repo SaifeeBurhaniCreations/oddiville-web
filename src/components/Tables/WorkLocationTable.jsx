@@ -21,7 +21,6 @@ const TableWrapper = ({ children }) => (
 );
 
 const renderTableRows = (data, handleDeleteClick) => {
-    console.log(data);
     return data.map((location, ind) => (
         <tr key={ind}>
             <td>

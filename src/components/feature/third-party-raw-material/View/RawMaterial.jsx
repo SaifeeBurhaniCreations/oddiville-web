@@ -24,12 +24,10 @@ const RawMaterial = () => {
     const fetchAll = async () => {
       try {
         const ordersRes = await fetchAllOrders();
-        console.log("ordersRes", ordersRes);
         
         dispatch(handleFetchData(ordersRes.data));
       } catch (error) {
         toast.error("Failed to fetch data");
-        console.error(error);
       } finally {
         setIsLoading(false);
       }
@@ -60,7 +58,6 @@ const RawMaterial = () => {
         toast.error("Failed to delete other items");
       }
     } catch (error) {
-      console.error("Error deleting other items:", error);
       toast.error("Error deleting other items");
     } finally {
       setIsLoading(false);

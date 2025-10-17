@@ -47,7 +47,6 @@ const useManageWorkLocation = () => {
     e.preventDefault();
 
     const result = form.validateForm();
-    console.log(form);
 
     const isCreating = !id;
     const hasNewBanner = banners;

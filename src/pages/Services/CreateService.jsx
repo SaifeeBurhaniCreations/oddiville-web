@@ -14,7 +14,6 @@ const CreateService = () => {
 
   const serviceData = useSelector((state) => state.ServiceDataSlice.data);
   const chambers = useSelector((state) => state.ServiceDataSlice.chamber) || [];
-// console.log(chambers);
 
   const {
     form,

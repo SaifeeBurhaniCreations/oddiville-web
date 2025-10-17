@@ -12,7 +12,6 @@ const Banners = ({
   const bannerRef = useRef();
   const [banner, setBanner] = useState({ banner: null, preview: "" });
   const [typeCheckError, setTypeCheckError] = useState("");
-console.log(deleteBanners);
 
   const updateBanner = (file) => {
     if (!file) return;
