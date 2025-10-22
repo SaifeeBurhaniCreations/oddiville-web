@@ -19,8 +19,8 @@ const WorkLocationForm = ({
     return (
         <form onSubmit={handleSubmit}>
             <div className="card">
-                <div className="card-header flex-cs gap-2 justify-content-between pt-4 pb-2">
-                    <h6>Manage Work Locations</h6>
+                <div className="card-header pt-4 pb-2 bg-light">
+                    <h5 className="m-0 text-center text-md-start">Manage Work Locations</h5>
                     {id && (
                         <button
                             type="button"

@@ -20,7 +20,7 @@ const Chamber = () => {
     return (
         <>
             
-            {chamberToDelete && (
+            {/* {chamberToDelete && (
                 <ConfirmationModal
                     title={`Delete Chamber "${chamberToDelete.chamber_name}"?`}
                     item={chamberToDelete}
@@ -28,10 +28,11 @@ const Chamber = () => {
                     onConfirm={() => handleDelete(chamberToDelete.id)} 
                     onClose={() => setChamberToDelete(null)}
                 />
-            )}
+            )} */}
+<div className="col-md-6 offset-md-2">
 
             <div className="d-flex justify-content-center px-3">
-                <div className="card my-4 w-100" style={{ maxWidth: "700px" }}>
+                <div className="card my-4 w-100">
                     <div className="card-header pt-4 pb-2 bg-light">
                         <h5 className="m-0 text-center text-md-start">
                             Dry Chamber Management
@@ -47,14 +48,15 @@ const Chamber = () => {
                         />
 
                        
-                        <ChamberList
+                        {/* <ChamberList
                             categories={categories}
                             setChamberToDelete={setChamberToDelete}
                             isInitialLoading={isInitialLoading}
-                        />
+                        /> */}
                     </div>
                 </div>
             </div>
+</div>
         </>
     );
 };

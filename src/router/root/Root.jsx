@@ -18,7 +18,10 @@ import RawMaterial from '@/components/feature/RawMaterial/RawMaterial';
 import ThirdPartyRM from '@/components/feature/third-party-raw-material/View/RawMaterial';
 import AddThirdPartyRM from '@/components/feature/third-party-raw-material/Create/AddRawMaterial';
 import Chamber from '@/pages/Chamber/Chamber';
-
+import ChamberList from '@/components/Lists/ChamberList';
+import AddWorkLocation from '@/components/feature/work-location/Create/AddWorkLocation';
+import AddLane from '@/components/feature/Lane/Create/AddLane';
+import AddRawMaterial from '@/components/feature/RawMaterial/AddRawMaterial';
 
 const rootRoutes = [
   {
@@ -30,23 +33,35 @@ const rootRoutes = [
     element: <WorkLocation />,
   },
   {
-    path: "work-location/:id",
-    element: <WorkLocation />,
+    path: "add-location",
+    element: <AddWorkLocation />,
+  },
+  {
+    path: "edit-location/:id",
+    element: <AddWorkLocation />,
   },
   {
     path: "lane",
     element: <Lane />,
   },
   {
-    path: "lane/:id",
-    element: <Lane />,
+    path: "add-lane",
+    element: <AddLane />,
   },
   {
-    path: "dry-warehouse",
+    path: "edit-lane/:id",
+    element: <AddLane />,
+  },
+  {
+    path: "items-list",
     element: <Services />,
   },
   {
-    path: "dry-warehouse/add-item",
+    path: "add-items",
+    element: <CreateService />,
+  },
+  {
+    path: "update-item/:id",
     element: <CreateService />,
   },
   {
@@ -54,16 +69,20 @@ const rootRoutes = [
     element:<Chamber/>
   },
   {
-    path: "dry-warehouse/update-warehouse/:id",
-    element: <CreateService />,
+    path : "frozen-warehouse/chamber-list",
+    element:<ChamberList/>
   },
   {
     path: "raw-material",
     element: <RawMaterial />,
   },
   {
-    path: "raw-material/:id",
-    element: <RawMaterial />,
+    path: "add-raw-material",
+    element: <AddRawMaterial />,
+  },
+  {
+    path: "add-raw-material/:id",
+    element: <AddRawMaterial />,
   },
   {
     path: "raw-material-other",

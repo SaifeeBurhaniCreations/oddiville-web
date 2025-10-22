@@ -1,7 +1,17 @@
 import React from "react";
 import Spinner from "@/components/Spinner/Spinner";
+import useChamberManagement from "@/hooks/useChamberManagement";
+import ConfirmationModal from "@/components/Dialogue_box/ConfirmationModal"; 
 
-const ChamberList = ({ categories, setChamberToDelete, isInitialLoading }) => {
+const ChamberList = () => {
+  // const ChamberList = ({ categories, setChamberToDelete, isInitialLoading }) => {
+  const {
+    categories,
+    chamberToDelete,
+    isInitialLoading,
+    setChamberToDelete,
+    handleDelete,
+  } = useChamberManagement();
   if (isInitialLoading) {
     return (
       <div className="text-center py-5">
@@ -18,52 +28,65 @@ const ChamberList = ({ categories, setChamberToDelete, isInitialLoading }) => {
   }
 
   return (
-    <div className="categories-list">
-      <h6 className="mb-3">Existing Chambers</h6>
-      <div className="table-responsive">
-        <table className="table table-borderless table-hover mb-0">
-          <thead>
-            <tr>
-              <th className="text-center">Name</th>
-              <th className="text-center">Capacity (in kgs)</th>
-              <th className="text-center">No. of Items</th>
-              <th className="text-center">Type</th>
-              <th className="text-center">Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {!categories[0].tag
-              ? window.location.reload()
-              : categories.map((chamber, idx) => (
-                  <tr
-                    key={idx}
-                    className={`text-dark ${
-                      chamber.tag === "dry" ? "is-dry" : "is-frozen"
-                    }`}
-                  >
-                    <td className="text-center p-1">{chamber.chamber_name}</td>
-                    <td className="text-center p-1">{chamber.capacity} Kgs</td>
-                    <td className="text-center p-1">
-                      {chamber?.items?.length ?? "No item"}
-                    </td>
-                    <td className="text-center p-1 text-capitalize">
-                      {chamber.tag}
-                    </td>
-                    <td className="text-center p-1">
-                      <button
-                        className="btn btn-link text-dark p-1"
-                        type="button"
-                        onClick={() => setChamberToDelete(chamber)}
-                      >
-                        <i className="fas fa-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-          </tbody>
-        </table>
+    <>
+      {chamberToDelete && (
+        <ConfirmationModal
+          title={`Delete Chamber "${chamberToDelete.chamber_name}"?`}
+          item={chamberToDelete}
+          onConfirm={() => handleDelete(chamberToDelete.id)}
+          onClose={() => setChamberToDelete(null)}
+        />
+      )}
+      <div className="categories-list col-md-8 offset-md-2 col-sm-12 offset-sm-0 card">
+        <div className="card-header">
+          <h5 className="mb-3">Existing Chambers</h5>
+        </div>
+        <div className="card-body">
+          <div className="table-responsive">
+            <table className="table table-borderless table-hover mb-0">
+              <thead>
+                <tr>
+                  <th className="">Name</th>
+                  <th className="">Capacity (in kgs)</th>
+                  <th className="">No. of Items</th>
+                  <th className="">Type</th>
+                  <th className="text-center">Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                {!categories[0].tag
+                  ? window.location.reload()
+                  : categories.map((chamber, idx) => (
+                      <tr key={idx} className={`text-dark`}>
+                        <td className=" ">
+                          {chamber.chamber_name}
+                        </td>
+                        <td className=" ">
+                          {chamber.capacity} Kgs
+                        </td>
+                        <td className=" ">
+                          {chamber?.items?.length ?? "No item"}
+                        </td>
+                        <td className=" text-capitalize">
+                          {chamber.tag}
+                        </td>
+                        <td className="text-center p-1">
+                          <button
+                            className="btn btn-link text-dark p-1"
+                            type="button"
+                            onClick={() => setChamberToDelete(chamber)}
+                          >
+                            <i className="fas fa-trash"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -4,10 +4,16 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
 import { formatDate } from "@/util/formatDate";
-import { fetchRawMaterial, removeRawMaterial } from "@/services/RawMaterialService";
-import { handleFetchData, handleRemoveData } from "@/redux/RawMaterialDataSlice";
+import {
+  fetchRawMaterial,
+  removeRawMaterial,
+} from "@/services/RawMaterialService";
+import {
+  handleFetchData,
+  handleRemoveData,
+} from "@/redux/RawMaterialDataSlice";
 import Spinner from "@/components/Spinner/Spinner";
-import AddRawMaterial from "./AddRawMaterial";
+// import AddRawMaterial from "./AddRawMaterial";
 
 const RawMaterial = () => {
   const [showModal, setShowModal] = useState(false);
@@ -77,34 +83,36 @@ const RawMaterial = () => {
     </table>
   );
 
-  const renderRows = () => (
+  const renderRows = () =>
     filteredData.map((item) => (
       <tr key={item._id}>
         <td>
           <div className="d-flex px-2 py-1">
-          <div
-  style={{
-    backgroundColor: "#9BC698",
-    borderRadius: 8,
-    padding: 4,
-    width: 64, // Set your desired width
-    height: 64, // Set your desired height
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  }}
->
-  <img
-    src={item?.sample_image?.url || './assets/img/png/fallback_img.png'}
-    alt="sample"
-    style={{
-      width: "100%",
-      height: "100%",
-      objectFit: "contain",
-      borderRadius: 8,
-    }}
-  />
-</div>
+            <div
+              style={{
+                backgroundColor: "#9BC698",
+                borderRadius: 8,
+                padding: 4,
+                width: 64, // Set your desired width
+                height: 64, // Set your desired height
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <img
+                src={
+                  item?.sample_image?.url || "./assets/img/png/fallback_img.png"
+                }
+                alt="sample"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  borderRadius: 8,
+                }}
+              />
+            </div>
           </div>
         </td>
         <td>
@@ -118,7 +126,7 @@ const RawMaterial = () => {
         <td>
           <div className="d-flex">
             <NavLink
-              to={`/raw-material/${item.id}`}
+              to={`/add-raw-material/${item.id}`}
               className="btn m-0 btn-link text-secondary font-weight-bold text-xs"
             >
               Edit
@@ -132,8 +140,7 @@ const RawMaterial = () => {
           </div>
         </td>
       </tr>
-    ))
-  );
+    ));
 
   return (
     <div className="container-fluid">
@@ -152,7 +159,7 @@ const RawMaterial = () => {
                         <div className="d-flex px-2 py-1">
                           <div>
                             <img
-                              src={'./assets/img/png/fallback_img.png'}
+                              src={"./assets/img/png/fallback_img.png"}
                               className="avatar avatar-lg"
                               alt="banner"
                             />
@@ -195,7 +202,11 @@ const RawMaterial = () => {
                   <TableWrapper>{renderRows()}</TableWrapper>
                 ) : (
                   <TableWrapper>
-                    <tr><td colSpan={4} className="text-center">No data found</td></tr>
+                    <tr>
+                      <td colSpan={4} className="text-center">
+                        No data found
+                      </td>
+                    </tr>
                   </TableWrapper>
                 )}
               </div>
@@ -203,9 +214,9 @@ const RawMaterial = () => {
           </div>
         </div>
 
-        <div className="col-md-4">
+        {/* <div className="col-md-4">
           <AddRawMaterial />
-        </div>
+        </div> */}
       </div>
 
       {/* Delete Confirmation Modal */}

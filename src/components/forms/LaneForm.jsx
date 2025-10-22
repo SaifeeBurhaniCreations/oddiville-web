@@ -7,7 +7,7 @@ const LaneForm = ({ id, form, isLoading, handleSubmit, handleExit }) => {
     <form onSubmit={handleSubmit}>
       <div className="card shadow-sm rounded-3">
         <div className="card-header flex-cs gap-2 justify-content-between pt-4 pb-2 bg-light">
-          <h6 className="m-0">Manage Lane</h6>
+          <h5 className="m-0">Manage Lane</h5>
           {id && (
             <button
               type="button"

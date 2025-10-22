@@ -39,8 +39,8 @@ const CreateService = () => {
   return (
     <div className="container-fluid">
       <form onSubmit={handleSubmit}>
-        <div className="row justify-content-center">
-          <div className="col-md-8">
+        <div className="row">
+          <div className="col-md-6 offset-md-2 col-sm-12 offset-sm-0">
             <div className="card shadow-sm">
               <div className="card-header bg-light">
                 <h5 className="mb-0">Manage Items</h5>

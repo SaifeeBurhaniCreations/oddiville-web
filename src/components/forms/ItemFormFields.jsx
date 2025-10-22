@@ -4,7 +4,7 @@ const ItemFormFields = ({ form, chambers }) => {
 
   return (
     <div className="row g-3">
-      <div className="form-floating col-md-6">
+      <div className="form-floating ">
         <input
           type="text"
           value={form.values.item_name}
@@ -19,7 +19,7 @@ const ItemFormFields = ({ form, chambers }) => {
           <div className="text-danger mt-1">{form.errors.item_name}</div>
         )}
       </div>
-      <div className="form-floating col-md-6">
+      <div className="form-floating ">
         <input
           type="text"
           value={form.values.description}
@@ -34,7 +34,7 @@ const ItemFormFields = ({ form, chambers }) => {
           <div className="text-danger mt-1">{form.errors.description}</div>
         )}
       </div>
-      <div className="col-md-6">
+      <div className="">
         <input
           type="date"
           value={
@@ -53,7 +53,7 @@ const ItemFormFields = ({ form, chambers }) => {
           <div className="text-danger mt-1">{form.errors.warehoused_date}</div>
         )}
       </div>
-      <div className="form-floating col-md-6">
+      <div className="form-floating ">
         <input
           type="text"
           value={form.values.quantity_unit}
@@ -68,7 +68,7 @@ const ItemFormFields = ({ form, chambers }) => {
           <div className="text-danger mt-1">{form.errors.quantity_unit}</div>
         )}
       </div>
-      <div className="col-md-6">
+      <div className="">
         <label className="form-label">Select Chamber</label>
         <select
           value={form.values.chamber_id || ""}

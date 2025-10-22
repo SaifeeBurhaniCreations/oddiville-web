@@ -38,9 +38,9 @@ const Lane = () => {
                     </div>
                 </div>
             
-                <div className="col-md-4">
+                {/* <div className="col-md-4">
                     <AddLane />
-                </div>
+                </div> */}
             </div>
 
            

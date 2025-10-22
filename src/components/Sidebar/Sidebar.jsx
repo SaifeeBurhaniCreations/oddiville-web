@@ -15,12 +15,12 @@ const Sidebar = ({ open, onClose }) => {
           onClick={onClose}
           style={{ background: "none", border: "none" }}
         />
-        <NavLink to="/" className="navbar-brand m-0">
+        <NavLink to="/" className="navbar-brand m-0 d-flex align-items-center">
           <img
             src="/assets/img/logo.png"
             className="navbar-brand-img h-100"
             alt="main_logo"
-          />
+          /> <span className="fw-bold fs-5">Oddiville</span>
         </NavLink>
       </div>
       <hr className="horizontal dark mt-0" />
@@ -77,7 +77,7 @@ const Sidebar = ({ open, onClose }) => {
             </h6>
           </li>
           <li className="nav-item">
-            <NavLink to="/dry-warehouse" className="nav-link">
+            <NavLink to="/items-list" className="nav-link">
               <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                 {/* List Icon */}
                 <svg
@@ -90,13 +90,13 @@ const Sidebar = ({ open, onClose }) => {
                   <path d="M2 2.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" />
                 </svg>
               </div>
-              <span className="nav-link-text ms-1">List Items</span>
+              <span className="nav-link-text ms-1">Item List</span>
             </NavLink>
           </li>
-
           <li className="nav-item">
-            <NavLink className="nav-link" to="/dry-warehouse/add-item">
+            <NavLink to="add-items" className="nav-link">
               <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                {/* List Icon */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -107,11 +107,9 @@ const Sidebar = ({ open, onClose }) => {
                   <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
                 </svg>
               </div>
-              <span className="nav-link-text ms-1">Add Item</span>
+              <span className="nav-link-text ms-1">Add Items</span>
             </NavLink>
           </li>
-
-          
 
           <li className="nav-item mt-3">
             <h6 className="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">
@@ -119,7 +117,7 @@ const Sidebar = ({ open, onClose }) => {
             </h6>
           </li>
           <li className="nav-item">
-            <NavLink className="nav-link" to="frozen-warehouse/create-chamber">
+            <NavLink className="nav-link" to="frozen-warehouse/chamber-list">
               <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -144,7 +142,23 @@ const Sidebar = ({ open, onClose }) => {
                   <circle cx="12" cy="15" r="2"></circle>
                 </svg>
               </div>
-              <span className="nav-link-text ms-1">Add Chamber</span>
+              <span className="nav-link-text ms-1">Chamber List</span>
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink className="nav-link" to="frozen-warehouse/create-chamber">
+              <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                </svg>
+              </div>
+              <span className="nav-link-text ms-1">Add Chambers</span>
             </NavLink>
           </li>
 
@@ -172,7 +186,24 @@ const Sidebar = ({ open, onClose }) => {
                   <circle cx="12" cy="10" r="3"></circle>
                 </svg>
               </div>
-              <span className="nav-link-text ms-1">List Locations</span>
+              <span className="nav-link-text ms-1">Location List</span>
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="add-location" className="nav-link">
+              <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                {/* Location SVG */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                </svg>
+              </div>
+              <span className="nav-link-text ms-1">Add Locations</span>
             </NavLink>
           </li>
 
@@ -206,6 +237,23 @@ const Sidebar = ({ open, onClose }) => {
               <span className="nav-link-text ms-1">List Lanes</span>
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink to="add-lane" className="nav-link">
+              <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                {/* Lane / Road SVG */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                </svg>
+              </div>
+              <span className="nav-link-text ms-1">Add Lanes</span>
+            </NavLink>
+          </li>
 
           <li className="nav-item mt-3">
             <h6 className="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">
@@ -233,6 +281,23 @@ const Sidebar = ({ open, onClose }) => {
                 </svg>
               </div>
               <span className="nav-link-text ms-1">List Raw Material</span>
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="add-raw-material" className="nav-link">
+              <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                {/* Raw Material (Box / Package) Icon */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                </svg>
+              </div>
+              <span className="nav-link-text ms-1">Add Raw Materials</span>
             </NavLink>
           </li>
 

@@ -45,7 +45,7 @@ const renderTableRows = (filteredData, handleDeleteClick) => {
             <td>
                 <div className="d-flex">
                     <NavLink
-                        to={`/dry-warehouse/update-warehouse/${service?.id}`}
+                        to={`/update-item/${service?.id}`}
                         className="btn m-0 btn-link text-secondary font-weight-bold text-xs"
                     >
                         Edit
