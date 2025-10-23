@@ -23,34 +23,33 @@ const useChamberManagement = () => {
     initialChamberState,
     chamberValidationSchema,
     { validateOnChange: true, debounce: 300 }
-);
+  );
 
-let chambersList = useRef();
+  let chambersList = useRef();
+
+  const loadChambers = async () => {
+    if (!categories || categories.length === 0) {
+      setIsInitialLoading(true);
+      try {
+        const res = await fetchChamber();
+        if (res.status === 200) {
+          dispatch({
+            type: "ServiceDataSlice/handleFetchCategory",
+            payload: res.data,
+          });
+        }
+        chambersList.current = res.data;
+      } catch (error) {
+        toast.error("Failed to fetch chambers");
+      } finally {
+        setIsInitialLoading(false);
+      }
+    }
+  };
 
   useEffect(() => {
-    const loadChambers = async () => {
-      if (!categories || categories.length === 0) {
-        setIsInitialLoading(true);
-        try {
-          const res = await fetchChamber();
-          if (res.status === 200) {
-            dispatch({
-              type: "ServiceDataSlice/handleFetchCategory",
-              payload: res.data,
-            });
-          }
-          chambersList.current = res.data;
-        } catch (error) {
-          toast.error("Failed to fetch chambers");
-        } finally {
-          setIsInitialLoading(false);
-        }
-      }
-    };
     loadChambers();
   }, [categories, dispatch]);
-
-  
 
   // Form Submission
   const handleSubmit = async (e) => {
@@ -105,6 +104,7 @@ let chambersList = useRef();
     handleSubmit,
     handleDelete,
     chambersList,
+    loadChambers,
   };
 };
 

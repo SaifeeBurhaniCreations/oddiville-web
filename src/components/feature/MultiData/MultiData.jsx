@@ -14,7 +14,7 @@ const MultiData = () => {
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <div onClick={()=>navigate('/dry-warehouse')} className="card cursor-pointer">
+                        <div onClick={()=>navigate('/items-list')} className="card cursor-pointer">
                             <div className="card-header justify-content-center flex-cs pt-4 pb-2">
                                 <h5>Manage Dry Warehouse</h5>
                             </div>
@@ -24,7 +24,7 @@ const MultiData = () => {
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <div onClick={()=>navigate('/dry-warehouse')} className="card cursor-pointer">
+                        <div onClick={()=>navigate('/frozen-warehouse/chamber-list')} className="card cursor-pointer">
                             <div className="card-header justify-content-center flex-cs pt-4 pb-2">
                                 <h5>Manage Frozen Chamber</h5>
                             </div>

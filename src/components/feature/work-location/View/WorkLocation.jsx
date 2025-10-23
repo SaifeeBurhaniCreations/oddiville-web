@@ -21,7 +21,7 @@ const WorkLocation = () => {
     return (
         <div className="container-fluid">
             <div className="row reverse">
-                <div className="col-md-8">
+                <div className="col-md-auto offset-md-2">
                     <div className="card mb-4">
                         <div className="card-header pb-0 d-flex justify-content-between align-items-center">
                             <h5>Work Locations</h5>

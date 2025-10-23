@@ -1,7 +1,7 @@
 import React from "react";
 import Spinner from "@/components/Spinner/Spinner";
 import useChamberManagement from "@/hooks/useChamberManagement";
-import ConfirmationModal from "@/components/Dialogue_box/ConfirmationModal"; 
+import ConfirmationModal from "@/components/Dialogue_box/ConfirmationModal";
 
 const ChamberList = () => {
   // const ChamberList = ({ categories, setChamberToDelete, isInitialLoading }) => {
@@ -37,50 +37,40 @@ const ChamberList = () => {
           onClose={() => setChamberToDelete(null)}
         />
       )}
-      <div className="categories-list col-md-8 offset-md-2 col-sm-12 offset-sm-0 card">
+      <div className="col-md-6 offset-md-2 col-sm-12 offset-sm-0 card">
         <div className="card-header">
           <h5 className="mb-3">Existing Chambers</h5>
         </div>
         <div className="card-body">
           <div className="table-responsive">
-            <table className="table table-borderless table-hover mb-0">
+            <table className="table mb-0">
               <thead>
                 <tr>
                   <th className="">Name</th>
                   <th className="">Capacity (in kgs)</th>
                   <th className="">No. of Items</th>
                   <th className="">Type</th>
-                  <th className="text-center">Delete</th>
+                  <th className="text-center">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {!categories[0].tag
-                  ? window.location.reload()
-                  : categories.map((chamber, idx) => (
-                      <tr key={idx} className={`text-dark`}>
-                        <td className=" ">
-                          {chamber.chamber_name}
-                        </td>
-                        <td className=" ">
-                          {chamber.capacity} Kgs
-                        </td>
-                        <td className=" ">
-                          {chamber?.items?.length ?? "No item"}
-                        </td>
-                        <td className=" text-capitalize">
-                          {chamber.tag}
-                        </td>
-                        <td className="text-center p-1">
-                          <button
-                            className="btn btn-link text-dark p-1"
-                            type="button"
-                            onClick={() => setChamberToDelete(chamber)}
-                          >
-                            <i className="fas fa-trash"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
+                {categories.map((chamber, idx) => (
+                  <tr key={idx} className={`text-dark`}>
+                    <td>{chamber.chamber_name}</td>
+                    <td>{chamber.capacity} Kgs</td>
+                    <td>{chamber?.items?.length ?? "No item"}</td>
+                    <td className="text-capitalize">{chamber.tag}</td>
+                    <td className="text-center p-1">
+                      <button
+                        className="btn btn-link text-dark p-1"
+                        type="button"
+                        onClick={() => setChamberToDelete(chamber)}
+                      >
+                        <i className="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

@@ -78,7 +78,7 @@ const  useManageServiceItem = ({
         if (response.status === 201) {
           dispatch(handlePostData(response.data));
           toast.success("Item added successfully!");
-          navigate("/dry-warehouse");
+          navigate("/items-list");
         } else {
           toast.error("Failed to add item");
         }
@@ -87,7 +87,7 @@ const  useManageServiceItem = ({
         if (response.status === 200) {
           dispatch(handleModifyData(response.data));
           toast.success("Item updated successfully!");
-          navigate("/dry-warehouse");
+          navigate("/items-list");
         } else {
           toast.error("Failed to update item");
         }

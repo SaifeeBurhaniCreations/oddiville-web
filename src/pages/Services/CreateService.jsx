@@ -1,4 +1,3 @@
-
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Spinner from "@/components/Spinner/Spinner";
@@ -6,11 +5,14 @@ import Banners from "@/components/Banners/Banners";
 import ItemFormFields from "@/components/forms/ItemFormFields";
 import { initialValues, validationRules } from "@/schemas/ServiceSchema";
 import useServiceForm from "@/hooks/useManageServiceItem";
+import useChamberManagement from "../../hooks/useChamberManagement";
+import { useEffect } from "react";
 
 const CreateService = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
+  const { loadChambers } = useChamberManagement();
 
   const serviceData = useSelector((state) => state.ServiceDataSlice.data);
   const chambers = useSelector((state) => state.ServiceDataSlice.chamber) || [];
@@ -35,6 +37,10 @@ const CreateService = () => {
     validationRules,
     chambers,
   });
+
+  useEffect(()=>{
+    loadChambers();
+  },[])
 
   return (
     <div className="container-fluid">

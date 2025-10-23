@@ -145,7 +145,7 @@ const RawMaterial = () => {
   return (
     <div className="container-fluid">
       <div className="row reverse">
-        <div className="col-md-8">
+        <div className="col-md-6 offset-md-2">
           <div className="card mb-4">
             <div className="card-header pb-0">
               <h5>Raw Material Item List</h5>

@@ -21,8 +21,8 @@ const Services = () => {
 
     return (
         <div className="container-fluid">
-            <div className="row min-vh-100 d-flex justify-content-center ">
-                <div className="col-md-8">
+            <div className="row min-vh-100">
+                <div className="col-md-6 offset-md-2">
                     <div className="card mb-4">
                         <div className="card-header pb-0 d-flex justify-content-between align-items-center">
                             <h5>Dry Chamber Item List</h5>
