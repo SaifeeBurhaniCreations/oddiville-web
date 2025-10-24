@@ -1,7 +1,7 @@
 import React from "react";
 import Spinner from "@/components/Spinner/Spinner";
 import useChamberManagement from "@/hooks/useChamberManagement";
-import ConfirmationModal from "@/components/Dialogue_box/ConfirmationModal";
+import ConfirmationModal from "@/components/Dialogue_box/ConfirmationModal"; 
 
 const ChamberList = () => {
   // const ChamberList = ({ categories, setChamberToDelete, isInitialLoading }) => {
@@ -43,7 +43,7 @@ const ChamberList = () => {
         </div>
         <div className="card-body">
           <div className="table-responsive">
-            <table className="table mb-0">
+            <table className="table table-hover mb-0">
               <thead>
                 <tr>
                   <th className="">Name</th>
@@ -54,23 +54,33 @@ const ChamberList = () => {
                 </tr>
               </thead>
               <tbody>
-                {categories.map((chamber, idx) => (
-                  <tr key={idx} className={`text-dark`}>
-                    <td>{chamber.chamber_name}</td>
-                    <td>{chamber.capacity} Kgs</td>
-                    <td>{chamber?.items?.length ?? "No item"}</td>
-                    <td className="text-capitalize">{chamber.tag}</td>
-                    <td className="text-center p-1">
-                      <button
-                        className="btn btn-link text-dark p-1"
-                        type="button"
-                        onClick={() => setChamberToDelete(chamber)}
-                      >
-                        <i className="fas fa-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {!categories[0].tag
+                  ? window.location.reload()
+                  : categories.map((chamber, idx) => (
+                      <tr key={idx} className={`text-dark`}>
+                        <td>
+                          {chamber.chamber_name}
+                        </td>
+                        <td>
+                          {chamber.capacity} Kgs
+                        </td>
+                        <td>
+                          {chamber?.items?.length ?? "No item"}
+                        </td>
+                        <td className="text-capitalize">
+                          {chamber.tag}
+                        </td>
+                        <td className="text-center p-1">
+                          <button
+                            className="btn btn-link text-dark p-1"
+                            type="button"
+                            onClick={() => setChamberToDelete(chamber)}
+                          >
+                            <i className="fas fa-trash fs-6"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
               </tbody>
             </table>
           </div>
