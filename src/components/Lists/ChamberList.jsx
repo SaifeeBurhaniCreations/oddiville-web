@@ -1,7 +1,7 @@
 import React from "react";
 import Spinner from "@/components/Spinner/Spinner";
 import useChamberManagement from "@/hooks/useChamberManagement";
-import ConfirmationModal from "@/components/Dialogue_box/ConfirmationModal"; 
+import ConfirmationModal from "@/components/Dialogue_box/ConfirmationModal";
 
 const ChamberList = () => {
   // const ChamberList = ({ categories, setChamberToDelete, isInitialLoading }) => {
@@ -58,18 +58,14 @@ const ChamberList = () => {
                   ? window.location.reload()
                   : categories.map((chamber, idx) => (
                       <tr key={idx} className={`text-dark`}>
+                        <td>{chamber.chamber_name}</td>
+                        <td>{chamber.capacity} Kgs</td>
                         <td>
-                          {chamber.chamber_name}
+                          {chamber?.items?.length === null || 0 || "0"
+                            ? "No item"
+                            : chamber?.items?.length}
                         </td>
-                        <td>
-                          {chamber.capacity} Kgs
-                        </td>
-                        <td>
-                          {chamber?.items?.length ?? "No item"}
-                        </td>
-                        <td className="text-capitalize">
-                          {chamber.tag}
-                        </td>
+                        <td className="text-capitalize">{chamber.tag}</td>
                         <td className="text-center p-1">
                           <button
                             className="btn btn-link text-dark p-1"
