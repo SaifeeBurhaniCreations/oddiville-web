@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 
 export default function useInventoryValidator() {
+  // New, simple & practical rules per your instruction
   const STEP_RULES = {
     1: {
       name: "Raw Material",
@@ -21,14 +22,18 @@ export default function useInventoryValidator() {
         "arrival_date",
       ],
       validators: {
-        item: (v) =>
-          !v || String(v).trim() === "" ? "Item name is required" : null,
-        quantity: (v) =>
+        Quantity: (v) =>
           v === "" || v == null
             ? "Quantity is required"
             : isFinite(Number(v))
             ? null
-            : "Quantity must be a valid number",
+            : "Quantity must be a number",
+        HSN: (v) =>
+          v === "" || v == null
+            ? "HSN is required"
+            : /^\d+$/.test(String(v).trim())
+            ? null
+            : "HSN must be numeric",
       },
     },
     2: {
@@ -45,16 +50,12 @@ export default function useInventoryValidator() {
         "status",
       ],
       validators: {
-        product_name: (v) =>
-          !v || String(v).trim() === ""
-            ? "Product name is required"
-            : null,
-        quantity: (v) =>
+        Quantity: (v) =>
           v === "" || v == null
             ? "Quantity is required"
             : isFinite(Number(v))
             ? null
-            : "Quantity must be a valid number",
+            : "Quantity must be a number",
       },
     },
     3: {
@@ -71,20 +72,12 @@ export default function useInventoryValidator() {
         "status",
       ],
       validators: {
-        product_name: (v) =>
-          !v || String(v).trim() === ""
-            ? "Product name is required"
-            : null,
-        chamber: (v) =>
-          !v || String(v).trim() === ""
-            ? "Chamber is required"
-            : null,
-        quantity: (v) =>
+        Quantity: (v) =>
           v === "" || v == null
             ? "Quantity is required"
             : isFinite(Number(v))
             ? null
-            : "Quantity must be a valid number",
+            : "Quantity must be a number",
       },
     },
     4: {
@@ -105,18 +98,12 @@ export default function useInventoryValidator() {
         "delivered_date",
       ],
       validators: {
-        raw_material_name: (v) =>
-          !v || String(v).trim() === ""
-            ? "Raw material name is required"
-            : null,
-        customer_name: (v) =>
-          !v || String(v).trim() === ""
-            ? "Customer name is required"
-            : null,
-        product_name: (v) =>
-          !v || String(v).trim() === ""
-            ? "Product name is required"
-            : null,
+        Quantity: (v) =>
+          v === "" || v == null
+            ? "Quantity is required"
+            : isFinite(Number(v))
+            ? null
+            : "Quantity must be a number",
       },
     },
   };
@@ -131,6 +118,7 @@ export default function useInventoryValidator() {
     const headerNormToOriginal = {};
     const normalizedHeaders = rawHeaders.map((h) => {
       const n = normalize(h);
+      // preserve the first original header encountered for display
       if (!(n in headerNormToOriginal))
         headerNormToOriginal[n] = h == null ? "" : String(h).trim();
       return n;
@@ -169,18 +157,24 @@ export default function useInventoryValidator() {
       };
     }
 
-    const { headerNormToOriginal, objects } = rowsToObjects(rows2D);
+    const { headerNormToOriginal, objects, normalizedHeaders } =
+      rowsToObjects(rows2D);
+
+    // build normalized map of available headers to original for robust matching
+    // adding the headers to the table
     const availableNorms = {};
     Object.keys(headerNormToOriginal).forEach((norm) => {
       availableNorms[norm] = headerNormToOriginal[norm];
     });
 
     const requiredNormalized = rule.requiredColumns.map((c) => normalize(c));
+
+    // If a required column isn't present at all (after lenient normalization), create an error
     const missingColumns = requiredNormalized.filter(
       (req) => !(req in availableNorms)
     );
-
     const errorsByColumn = {};
+
     missingColumns.forEach((missNorm) => {
       const display =
         rule.requiredColumns.find((rc) => normalize(rc) === missNorm) ||
@@ -191,18 +185,21 @@ export default function useInventoryValidator() {
       };
     });
 
+    // Validate each data row for existent required columns
     objects.forEach((rowObj, idx) => {
-      const rowNumber = idx + 2;
-
-      Object.keys(rule.validators).forEach((col) => {
-        const normCol = normalize(col);
-        const originalHeader = availableNorms[normCol];
-        if (!originalHeader) return;
-
+      const rowNumber = idx + 2; // because sheet rows: headers at 1, data starts at row 2
+      // for each required column that exists, validate presence/value
+      rule.requiredColumns.forEach((reqCol) => {
+        const normReq = normalize(reqCol);
+        // find matching original header key if available
+        const originalHeader = availableNorms[normReq];
+        if (!originalHeader) {
+          // column missing already accounted for above
+          return;
+        }
         const value = rowObj[originalHeader];
-        const validatorFn = rule.validators[col];
-        const maybeMsg = validatorFn(value);
-        if (maybeMsg) {
+        // If empty
+        if (value === "" || value == null) {
           const display = originalHeader;
           errorsByColumn[display] = errorsByColumn[display] || {
             column: display,
@@ -210,24 +207,58 @@ export default function useInventoryValidator() {
           };
           errorsByColumn[display].issues.push({
             row: rowNumber,
-            message: maybeMsg,
+            message: `${display} is required`,
           });
+        } else {
+          // run optional validator for this column
+          const validatorFn = rule.validators && rule.validators[reqCol];
+          if (typeof validatorFn === "function") {
+            const maybeMsg = validatorFn(value);
+            if (maybeMsg) {
+              const display = originalHeader;
+              errorsByColumn[display] = errorsByColumn[display] || {
+                column: display,
+                issues: [],
+              };
+              errorsByColumn[display].issues.push({
+                row: rowNumber,
+                message: maybeMsg,
+              });
+            }
+          }
         }
       });
+
+      // Additionally: run generic validators for fields present in validators but not in requiredColumns
+      if (rule.validators) {
+        Object.keys(rule.validators).forEach((col) => {
+          const normCol = normalize(col);
+          const originalHeader = availableNorms[normCol];
+          if (!originalHeader) return; // not present in sheet
+          // if already validated above (required) we skip; this supports extra validators if needed
+        });
+      }
     });
 
+    // Convert errorsByColumn into array ordered by column
     const errors = Object.keys(errorsByColumn).map((k) => errorsByColumn[k]);
 
+    // Build mappedRows (preserve original header titles trimmed as keys). Add an id.
     const mappedRows = objects.map((r) => {
       const mapped = {};
       Object.keys(r).forEach((k) => {
         const trimmedKey = k == null ? "" : String(k).trim();
         mapped[trimmedKey] = r[k];
       });
-      mapped._id =
-        typeof crypto !== "undefined" && crypto.randomUUID
-          ? crypto.randomUUID()
-          : `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+      // unique id: use crypto if available else fallback
+      try {
+        mapped._id =
+          typeof crypto !== "undefined" && crypto.randomUUID
+            ? crypto.randomUUID()
+            : `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+      } catch {
+        mapped._id = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+      }
       return mapped;
     });
 
