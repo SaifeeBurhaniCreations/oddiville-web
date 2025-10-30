@@ -1,19 +1,12 @@
 // OldInventory.jsx
 import React, { useState } from "react";
 import * as XLSX from "xlsx";
+import { toast } from "react-toastify";
 import useStep from "@/hooks/useStep";
 import useInventoryValidator from "@/hooks/useInventoryValidator.jsx";
 import ModalAccordion from "@/components/modals/ModalAccordion.jsx";
 import ImageUploader from "../../Shared/oldInventory/ImageUploader";
 import ExcelUploader from "../../Shared/oldInventory/ExcelUploader";
-
-/**
- * Rewritten OldInventory component.
- * - leaner
- * - dynamic steps
- * - uses useStep + useInventoryValidator
- * - shows accordion modal (Modal UI: C) when there are validation errors
- */
 
 const STEPS_CONFIG = [
   {
@@ -30,7 +23,7 @@ const STEPS_CONFIG = [
   },
   {
     key: 3,
-    title: "ChamberStock entry",
+    title: "Chamber Stock entry",
     acceptsImage: false,
     buttonLabel: "Add ChamberStock",
   },
@@ -45,9 +38,8 @@ const STEPS_CONFIG = [
 export default function OldInventory() {
   const { step, next, prev, setStep } = useStep(1, STEPS_CONFIG.length);
   const { validateExcel } = useInventoryValidator();
-
-  const [excelRows, setExcelRows] = useState([]); // raw 2D rows as returned by XLSX.utils.sheet_to_json(..., { header: 1 })
-  const [parsedPreview, setParsedPreview] = useState([]); // convenience for previewing mapped rows
+  const [excelRows, setExcelRows] = useState([]);
+  const [parsedPreview, setParsedPreview] = useState([]);
   const [challan, setChallan] = useState({ rawMaterial: [], dispatch: [] });
   const [showModal, setShowModal] = useState(false);
   const [modalErrors, setModalErrors] = useState([]);
@@ -67,50 +59,59 @@ export default function OldInventory() {
         raw: false,
       });
       setExcelRows(rows || []);
-      // quick preview: keep first 20 rows (or so)
       const previewRows = (rows || []).slice(0, 21);
       setParsedPreview(previewRows);
     };
     reader.readAsArrayBuffer(excelFile);
   };
 
+const onClickNext = () => {
   const currentCfg = STEPS_CONFIG.find((s) => s.key === step);
 
-  const onClickNext = () => {
-    // run validation against the uploaded excelRows
-    const { errors, mappedRows } = validateExcel(excelRows, step);
+  
+  if (!excelRows || excelRows.length <= 1) {
+    toast.error("Please upload a valid file with data before proceeding.");
+    return;
+  }
 
-    if (errors && errors.length) {
-      // show modal accordion
-      setModalErrors(errors);
-      setShowModal(true);
+  
+  if (currentCfg.acceptsImage) {
+    const challanKey =
+      step === 1 ? "rawMaterial" : step === 4 ? "dispatch" : null;
+    const currentChallan = challanKey ? challan[challanKey] : [];
+
+    if (!currentChallan || currentChallan.length === 0) {
+      toast.error("Please upload the required challan image before proceeding.");
       return;
     }
+  }
 
-    // no errors => keep the mapped rows someplace (in memory for now) and advance
-    // you can change this to send the mappedRows to backend here
-    console.log(`Step ${step} validated, rows:`, mappedRows.length);
-    // For demo: keep preview of mapped rows truncated
-    setParsedPreview([
-      Object.keys(mappedRows[0] || {}).map((k) => k),
-      ...mappedRows.slice(0, 20).map((r) => Object.values(r)),
-    ]);
-    // move to next step (if any)
-    if (step < STEPS_CONFIG.length) {
-      const nextCfg = STEPS_CONFIG.find((s) => s.key === step + 1);
-      setNextStepTitle(nextCfg ? nextCfg.title : "");
-      // Show confirm modal pattern from your original flow
-      // Here we just go next immediately for simplicity - you can prompt for confirmation if desired
-      next();
-      // clear the excelRows for the next step so user uploads new sheet
-      setExcelRows([]);
-    } else {
-      // finished all steps
-      alert(
-        "All steps completed. Ready to submit to backend (implement API call)."
-      );
-    }
-  };
+
+  const { errors, mappedRows } = validateExcel(excelRows, step);
+
+  if (errors && errors.length) {
+    setModalErrors(errors);
+    setShowModal(true);
+    return;
+  }
+
+  console.log(`Step ${step} validated, rows:`, mappedRows.length);
+
+  setParsedPreview([
+    Object.keys(mappedRows[0] || {}).map((k) => k),
+    ...mappedRows.slice(0, 20).map((r) => Object.values(r)),
+  ]);
+
+  if (step < STEPS_CONFIG.length) {
+    const nextCfg = STEPS_CONFIG.find((s) => s.key === step + 1);
+    setNextStepTitle(nextCfg ? nextCfg.title : "");
+    toast.success(`${currentCfg.title} completed! Proceed to ${nextCfg.title}.`);
+    next();
+    setExcelRows([]);
+  } else {
+    toast.success("All steps completed.");
+  }
+};
 
   return (
     <div className="container d-flex flex-column gap-3">
@@ -121,13 +122,13 @@ export default function OldInventory() {
               <div key={cfg.key} className="card">
                 <div className="d-flex justify-content-between align-items-center card-header">
                   <h6>{cfg.title}</h6>
-                  <button
+                  {/* <button
                     type="button"
                     className="btn btn-outline-primary btn-xs"
                     disabled={cfg.key !== step}
                   >
                     {cfg.title} active?
-                  </button>
+                  </button> */}
                 </div>
                 <div className="card-body">
                   <ExcelUploader
@@ -151,7 +152,6 @@ export default function OldInventory() {
                       type="button"
                       className="btn btn-success"
                       onClick={() => {
-                        // run validation and move next only if no errors
                         onClickNext();
                       }}
                       disabled={cfg.key !== step}
@@ -181,13 +181,13 @@ export default function OldInventory() {
               <div key={cfg.key} className="card">
                 <div className="d-flex justify-content-between align-items-center card-header">
                   <h6>{cfg.title}</h6>
-                  <button
+                  {/* <button
                     type="button"
                     className="btn btn-outline-primary btn-xs"
                     disabled={cfg.key !== step}
                   >
                     {cfg.title} active?
-                  </button>
+                  </button> */}
                 </div>
                 <div className="card-body">
                   <ExcelUploader
@@ -234,8 +234,6 @@ export default function OldInventory() {
           </div>
         </div>
       </div>
-
-      {/* Preview table */}
       <div className="row">
         <div className="col-md-12">
           {parsedPreview && parsedPreview.length > 0 && (
@@ -269,8 +267,6 @@ export default function OldInventory() {
           )}
         </div>
       </div>
-
-      {/* Modal Accordion for Errors */}
       <ModalAccordion
         isOpen={showModal}
         title={`Validation errors - ${

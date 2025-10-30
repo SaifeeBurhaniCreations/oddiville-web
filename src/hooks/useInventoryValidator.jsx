@@ -198,7 +198,6 @@ export default function useInventoryValidator() {
           return;
         }
         const value = rowObj[originalHeader];
-        // If empty
         if (value === "" || value == null) {
           const display = originalHeader;
           errorsByColumn[display] = errorsByColumn[display] || {
@@ -229,21 +228,17 @@ export default function useInventoryValidator() {
         }
       });
 
-      // Additionally: run generic validators for fields present in validators but not in requiredColumns
       if (rule.validators) {
         Object.keys(rule.validators).forEach((col) => {
           const normCol = normalize(col);
           const originalHeader = availableNorms[normCol];
-          if (!originalHeader) return; // not present in sheet
-          // if already validated above (required) we skip; this supports extra validators if needed
+          if (!originalHeader) return;
         });
       }
     });
 
-    // Convert errorsByColumn into array ordered by column
     const errors = Object.keys(errorsByColumn).map((k) => errorsByColumn[k]);
 
-    // Build mappedRows (preserve original header titles trimmed as keys). Add an id.
     const mappedRows = objects.map((r) => {
       const mapped = {};
       Object.keys(r).forEach((k) => {
